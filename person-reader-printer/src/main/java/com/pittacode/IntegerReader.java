@@ -1,0 +1,28 @@
+package com.pittacode;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Scanner;
+
+public class IntegerReader {
+
+    private final Scanner scanner;
+    private final BufferedReader reader;
+
+    public IntegerReader() {
+        this.scanner = new Scanner(System.in);
+        this.reader = new BufferedReader(new InputStreamReader(System.in));
+    }
+
+    public int scan() {
+        System.out.println("Enter number: ");
+        return scanner.nextInt();
+    }
+
+    public int read() throws IOException {
+        System.out.println("Enter number: ");
+        final String line = reader.readLine();
+        return Integer.parseInt(line);
+    }
+}
