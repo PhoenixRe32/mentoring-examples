@@ -9,11 +9,11 @@ public class PersonBuilder {
     private final IntegerReader heightReader;
     private final StringReader nameReader;
 
-    public PersonBuilder() {
-        this.ageReader = new IntegerReader("age", 0, 150);
-        this.yearReader = new IntegerReader("year of birth");
-        this.heightReader = new IntegerReader("height", 30, 300);
-        this.nameReader = new StringReader("name");
+    public PersonBuilder(IntegerReader ageReader, IntegerReader yearReader, IntegerReader heightReader, StringReader nameReader) {
+        this.ageReader = ageReader;
+        this.yearReader = yearReader;
+        this.heightReader = heightReader;
+        this.nameReader = nameReader;
     }
 
     public Person build() throws IOException {
