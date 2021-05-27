@@ -4,13 +4,15 @@ import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        final IntegerReader integerReader = new IntegerReader();
-        final StringReader stringReader = new StringReader();
+        final IntegerReader ageReader = new IntegerReader("age");
+        final IntegerReader yearReader = new IntegerReader("year of birth");
+        final IntegerReader heightReader = new IntegerReader("height");
+        final StringReader nameReader = new StringReader("name");
 
-        String name = stringReader.read();
-        int yearOfBirth = integerReader.read();
-        int age = integerReader.read();
-        int height = integerReader.read();
+        String name = nameReader.read();
+        int yearOfBirth = yearReader.read();
+        int age = ageReader.read();
+        int height = heightReader.read();
 
         Person person = new Person(name, yearOfBirth, age, height);
 
