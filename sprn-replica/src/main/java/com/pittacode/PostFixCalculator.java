@@ -16,16 +16,13 @@ public class PostFixCalculator {
     private final static String DIV = "/";
     private final static String MUL = "*";
     private final static String POW = "^";
-    private final static Collection<String> OPERATIONS = toSet(Arrays.asList(ADD, SUB, DIV, MUL, POW));
 
     // OPERAND -- modifies stack
     private final static String RND = "r";
-    private final static Collection<String> INPUT = toSet(Collections.singletonList(RND));
 
     // ACTIONS -- read only
     private final static String PRINT_STACK = "d";
     private final static String PRINT_LAST_INPUT = "=";
-    private final static Collection<String> ACTIONS = toSet(Arrays.asList(PRINT_LAST_INPUT, PRINT_STACK));
 
     private static final int MAX_STACK_SIZE = 23;
     private static final List<Integer> RANDOMS = Arrays.asList(1804289383, 846930886, 1681692777, 1714636915,
@@ -57,6 +54,16 @@ public class PostFixCalculator {
                 break;
             case RND:
                 pushOperandToStack(generateRandomNumber());
+                break;
+            case ADD:
+                break;
+            case SUB:
+                break;
+            case DIV:
+                break;
+            case MUL:
+                break;
+            case POW:
                 break;
             default:
                 processUnrecognisedInput(input);
