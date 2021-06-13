@@ -1,7 +1,5 @@
 package com.pittacode;
 
-import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class CalculatorConsole {
@@ -19,9 +17,11 @@ public class CalculatorConsole {
                     + System.lineSeparator();
 
     private final Scanner scanner;
+    private final PostFixCalculator postFixCalculator;
 
-    public CalculatorConsole(Scanner scanner) {
+    public CalculatorConsole(Scanner scanner, PostFixCalculator postFixCalculator) {
         this.scanner = scanner;
+        this.postFixCalculator = postFixCalculator;
     }
 
     public void start() {
@@ -40,6 +40,9 @@ public class CalculatorConsole {
         if (isExitCommand(input)) {
             return false;
         }
+
+        postFixCalculator.process(input);
+
         return true;
     }
 
