@@ -74,6 +74,7 @@ public class PostFixCalculator {
                 push(add());
                 break;
             case SUB:
+                push(subtract());
                 break;
             case DIV:
                 break;
@@ -114,6 +115,18 @@ public class PostFixCalculator {
             operand2 = (long) stack.pop();
             Long operand1 = (long) stack.pop();
             return applyLimits(operand1 + operand2);
+        } catch (Exception e) {
+            printUnderflowError();
+            return operand2 == null ? null : operand2.intValue();
+        }
+    }
+
+    private Integer subtract() {
+        Long operand2 = null;
+        try {
+            operand2 = (long) stack.pop();
+            Long operand1 = (long) stack.pop();
+            return applyLimits(operand1 - operand2);
         } catch (Exception e) {
             printUnderflowError();
             return operand2 == null ? null : operand2.intValue();
