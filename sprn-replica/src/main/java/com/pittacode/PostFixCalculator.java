@@ -39,26 +39,18 @@ public class PostFixCalculator {
     }
 
     public void process(String input) {
-        if (isAction(input)) {
-            executeAction(input);
-        } else if (isOperand(input)) {
-            pushOperandToStack(input);
-        } else {
-            System.err.printf("Unrecognised operator or operand \"%s\".%n", input);
-        }
-    }
-
-    private boolean isAction(String input) {
-        return ACTIONS.contains(input);
-    }
-
-    private void executeAction(String input) {
-        if (PRINT_LAST_INPUT.equalsIgnoreCase(input)) {
-            printLastInput();
-        } else if (PRINT_STACK.equalsIgnoreCase(input)) {
-            printStack();
-        } else {
-            System.err.println("Shouldn't get here... In-development error");
+        switch (input) {
+            case PRINT_LAST_INPUT:
+                printLastInput();
+                break;
+            case PRINT_STACK:
+                printStack();
+                break;
+            case RND:
+                pushOperandToStack(generateRandomNumber());
+                break;
+            default:
+                processUnrecognisedInput(input);
         }
     }
 
@@ -74,8 +66,8 @@ public class PostFixCalculator {
         stack.descendingIterator().forEachRemaining(System.out::println);
     }
 
-    private boolean isOperand(String input) {
-        return RND.equalsIgnoreCase(input) || isNumber(input);
+    private Integer generateRandomNumber() {
+        return 467134654;
     }
 
     private boolean isNumber(String input) {
@@ -87,23 +79,23 @@ public class PostFixCalculator {
         }
     }
 
-    private void pushOperandToStack(String operand) {
-        if (stack.size() == MAX_STACK_SIZE) {
-            printOverflowError();
-        } else if (RND.equalsIgnoreCase(operand)) {
-            stack.push(generateRandomNumber());
+    private void processUnrecognisedInput(String input) {
+        if (isNumber(input)) {
+            pushOperandToStack(Integer.parseInt(input));
         } else {
-            stack.push(Integer.parseInt(operand));
+            System.err.printf("Unrecognised operator or operand \"%s\".%n", input);
         }
     }
 
-    private Integer generateRandomNumber() {
-        return 467134654;
+    private void pushOperandToStack(Integer operand) {
+        if (stack.size() == MAX_STACK_SIZE) {
+            printOverflowError();
+        } else {
+            stack.push(operand);
+        }
     }
 
     private void printOverflowError() {
         System.err.println("Stack overflow");
     }
-
-
 }
