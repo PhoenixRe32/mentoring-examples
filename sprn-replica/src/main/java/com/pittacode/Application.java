@@ -1,16 +1,18 @@
 package com.pittacode;
 
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class Application {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         // Dependencies
-        Scanner terminalScanner = new Scanner(System.in);
+        BufferedReader terminalReader = new BufferedReader(new InputStreamReader(System.in));
         PostFixCalculator postFixCalculator = new PostFixCalculator();
 
         // Build actual application
-        CalculatorConsole calculatorConsole = new CalculatorConsole(terminalScanner, postFixCalculator);
+        CalculatorConsole calculatorConsole = new CalculatorConsole(terminalReader, postFixCalculator);
 
         // Start it
         calculatorConsole.start();

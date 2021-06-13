@@ -1,6 +1,7 @@
 package com.pittacode;
 
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
 
 public class CalculatorConsole {
 
@@ -12,30 +13,31 @@ public class CalculatorConsole {
                     + "----------------------------"
                     + System.lineSeparator()
                     + System.lineSeparator()
-                    + "Type `" + EXIT + "` to terminate the application"
+                    + "Type `" + EXIT + "` or `Ctrl-d` to terminate the application"
                     + System.lineSeparator()
                     + System.lineSeparator();
 
-    private final Scanner scanner;
+    private final BufferedReader reader;
     private final PostFixCalculator postFixCalculator;
 
-    public CalculatorConsole(Scanner scanner, PostFixCalculator postFixCalculator) {
-        this.scanner = scanner;
+    public CalculatorConsole(BufferedReader reader, PostFixCalculator postFixCalculator) {
+        this.reader = reader;
         this.postFixCalculator = postFixCalculator;
     }
 
-    public void start() {
-        System.out.println(INTRO);;
+    public void start() throws IOException {
+        System.out.println(INTRO);
+        ;
 
         boolean isStillRunning = true;
-        while(isStillRunning) {
+        while (isStillRunning) {
             isStillRunning = dialog();
         }
 
         System.out.println("BYE!");
     }
 
-    private boolean dialog() {
+    private boolean dialog() throws IOException {
         String input = getInput();
         if (isExitCommand(input)) {
             return false;
@@ -46,12 +48,12 @@ public class CalculatorConsole {
         return true;
     }
 
-    private String getInput() {
+    private String getInput() throws IOException {
         System.out.print(PROMPT);
-        return scanner.nextLine();
+        return reader.readLine();
     }
 
     private boolean isExitCommand(String input) {
-        return EXIT.equalsIgnoreCase(input.trim());
+        return input == null || EXIT.equalsIgnoreCase(input.trim());
     }
 }
