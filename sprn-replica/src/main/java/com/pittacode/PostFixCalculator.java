@@ -9,6 +9,8 @@ import java.util.List;
 
 public class PostFixCalculator {
 
+    private final static int MINIMUM_INPUT = Integer.MIN_VALUE;
+
     // OPERATORS -- modifies stack
     private final static String ADD = "+";
     private final static String SUB = "-";
@@ -93,7 +95,11 @@ public class PostFixCalculator {
     }
 
     private void printStack() {
-        stack.descendingIterator().forEachRemaining(System.out::println);
+        if (stack.isEmpty()) {
+            System.out.println(MINIMUM_INPUT);
+        } else {
+            stack.descendingIterator().forEachRemaining(System.out::println);
+        }
     }
 
     private Integer randomNumber() {
