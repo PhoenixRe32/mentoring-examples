@@ -3,7 +3,6 @@ package com.pittacode;
 import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Deque;
 import java.util.HashSet;
 import java.util.List;
@@ -44,6 +43,15 @@ public class PostFixCalculator {
         this.randomIndex = 0;
     }
 
+    // Wrap push operation to implement stack limitation logic
+    public void push(Integer operand) {
+        if (stack.size() == MAX_STACK_SIZE) {
+            printOverflowError();
+        } else {
+            stack.push(operand);
+        }
+    }
+
     public void process(String input) {
         switch (input) {
             case PRINT_LAST_INPUT:
@@ -53,9 +61,10 @@ public class PostFixCalculator {
                 printStack();
                 break;
             case RND:
-                pushOperandToStack(generateRandomNumber());
+                push(randomNumber());
                 break;
             case ADD:
+                push(add());
                 break;
             case SUB:
                 break;
@@ -82,10 +91,24 @@ public class PostFixCalculator {
         stack.descendingIterator().forEachRemaining(System.out::println);
     }
 
-    private Integer generateRandomNumber() {
+    private Integer randomNumber() {
         Integer nextRandom = RANDOMS.get(randomIndex);
         randomIndex = (randomIndex + 1) % RANDOMS.size();
         return nextRandom;
+    }
+
+    private Integer add() {
+        Integer operand2 = stack.pop();
+        Integer operand1 = stack.pop();
+        return operand1 + operand2;
+    }
+
+    private void processUnrecognisedInput(String input) {
+        if (isNumber(input)) {
+            push(Integer.parseInt(input));
+        } else {
+            System.err.printf("Unrecognised operator or operand \"%s\".%n", input);
+        }
     }
 
     private boolean isNumber(String input) {
@@ -94,22 +117,6 @@ public class PostFixCalculator {
             return true;
         } catch (Exception e) {
             return false;
-        }
-    }
-
-    private void processUnrecognisedInput(String input) {
-        if (isNumber(input)) {
-            pushOperandToStack(Integer.parseInt(input));
-        } else {
-            System.err.printf("Unrecognised operator or operand \"%s\".%n", input);
-        }
-    }
-
-    private void pushOperandToStack(Integer operand) {
-        if (stack.size() == MAX_STACK_SIZE) {
-            printOverflowError();
-        } else {
-            stack.push(operand);
         }
     }
 
