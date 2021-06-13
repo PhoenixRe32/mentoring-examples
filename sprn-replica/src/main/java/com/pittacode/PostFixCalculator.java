@@ -77,10 +77,13 @@ public class PostFixCalculator {
                 push(subtract());
                 break;
             case DIV:
+                push(divide());
                 break;
             case MUL:
+                push(multiply());
                 break;
             case POW:
+                push(power());
                 break;
             default:
                 processUnrecognisedInput(input);
@@ -127,6 +130,42 @@ public class PostFixCalculator {
             operand2 = (long) stack.pop();
             Long operand1 = (long) stack.pop();
             return operand1 - operand2;
+        } catch (Exception e) {
+            printUnderflowError();
+            return operand2;
+        }
+    }
+
+    private Long divide() {
+        Long operand2 = null;
+        try {
+            operand2 = (long) stack.pop();
+            Long operand1 = (long) stack.pop();
+            return operand1 / operand2;
+        } catch (Exception e) {
+            printUnderflowError();
+            return operand2;
+        }
+    }
+
+    private Long multiply() {
+        Long operand2 = null;
+        try {
+            operand2 = (long) stack.pop();
+            Long operand1 = (long) stack.pop();
+            return operand1 * operand2;
+        } catch (Exception e) {
+            printUnderflowError();
+            return operand2;
+        }
+    }
+
+    private Long power() {
+        Long operand2 = null;
+        try {
+            operand2 = (long) stack.pop();
+            Long operand1 = (long) stack.pop();
+            return Double.valueOf(Math.pow(operand1, operand2)).longValue();
         } catch (Exception e) {
             printUnderflowError();
             return operand2;
