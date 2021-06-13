@@ -47,7 +47,7 @@ public class PostFixCalculator {
     }
 
     // Wrap push operation to implement stack limitation logic
-    public void push(Integer operand) {
+    public void push(Long operand) {
         if (operand == null) {
             // do nothing, we don't add null values
             // we also use it as a way to deal with some errors
@@ -55,7 +55,7 @@ public class PostFixCalculator {
         } else if (stack.size() == MAX_STACK_SIZE) {
             printOverflowError();
         } else {
-            stack.push(operand);
+            stack.push(applyLimits(operand));
         }
     }
 
@@ -103,39 +103,39 @@ public class PostFixCalculator {
         }
     }
 
-    private Integer randomNumber() {
+    private Long randomNumber() {
         Integer nextRandom = RANDOMS.get(randomIndex);
         randomIndex = (randomIndex + 1) % RANDOMS.size();
-        return nextRandom;
+        return (long) nextRandom;
     }
 
-    private Integer add() {
+    private Long add() {
         Long operand2 = null;
         try {
             operand2 = (long) stack.pop();
             Long operand1 = (long) stack.pop();
-            return applyLimits(operand1 + operand2);
+            return operand1 + operand2;
         } catch (Exception e) {
             printUnderflowError();
-            return operand2 == null ? null : operand2.intValue();
+            return operand2;
         }
     }
 
-    private Integer subtract() {
+    private Long subtract() {
         Long operand2 = null;
         try {
             operand2 = (long) stack.pop();
             Long operand1 = (long) stack.pop();
-            return applyLimits(operand1 - operand2);
+            return operand1 - operand2;
         } catch (Exception e) {
             printUnderflowError();
-            return operand2 == null ? null : operand2.intValue();
+            return operand2;
         }
     }
 
     private void processUnrecognisedInput(String input) {
         if (isNumber(input)) {
-            push(Integer.parseInt(input));
+            push(Long.parseLong(input));
         } else {
             System.err.printf("Unrecognised operator or operand \"%s\".%n", input);
         }
@@ -143,7 +143,7 @@ public class PostFixCalculator {
 
     private boolean isNumber(String input) {
         try {
-            Integer.parseInt(input);
+            Long.parseLong(input);
             return true;
         } catch (Exception e) {
             return false;
