@@ -1,0 +1,41 @@
+plugins {
+    id 'application'
+    id 'idea'
+}
+
+group 'com.pittacode'
+version '1.0-SNAPSHOT'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+application {
+    mainClass = 'com.pittacode.Application'
+}
+
+run {
+    standardInput = System.in
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation('org.junit.jupiter:junit-jupiter-api:5.6.0') {
+        exclude group: "org.junit.vintage", module: "junit-vintage-engine"
+    }
+    testImplementation 'org.junit.jupiter:junit-jupiter-params:5.6.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+
+    testImplementation 'org.assertj:assertj-core:3.18.1'
+
+    testCompileOnly 'org.mockito:mockito-core:3.6.28'
+    testCompileOnly 'org.mockito:mockito-junit-jupiter:3.6.28'
+}
+
+test {
+    useJUnitPlatform()
+}
