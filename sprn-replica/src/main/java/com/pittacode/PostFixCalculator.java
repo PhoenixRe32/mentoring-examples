@@ -9,7 +9,7 @@ import java.util.HashSet;
 
 public class PostFixCalculator {
 
-    // OPERATIONS -- modifies stack
+    // OPERATORS -- modifies stack
     private final static String ADD = "+";
     private final static String SUB = "-";
     private final static String DIV = "/";
@@ -17,7 +17,7 @@ public class PostFixCalculator {
     private final static String POW = "^";
     private final static Collection<String> OPERATIONS = toSet(Arrays.asList(ADD, SUB, DIV, MUL, POW));
 
-    // INPUT -- modifies stack
+    // OPERAND -- modifies stack
     private final static String RND = "r";
     private final static Collection<String> INPUT = toSet(Collections.singletonList(RND));
 
@@ -41,8 +41,8 @@ public class PostFixCalculator {
     public void process(String input) {
         if (isAction(input)) {
             executeAction(input);
-        } else if (isNumber(input)) {
-            pushNumberToStack(Integer.parseInt(input));
+        } else if (isOperand(input)) {
+            pushOperandToStack(input);
         } else {
             System.err.printf("Unrecognised operator or operand \"%s\".%n", input);
         }
@@ -74,6 +74,10 @@ public class PostFixCalculator {
         stack.descendingIterator().forEachRemaining(System.out::println);
     }
 
+    private boolean isOperand(String input) {
+        return RND.equalsIgnoreCase(input) || isNumber(input);
+    }
+
     private boolean isNumber(String input) {
         try {
             Integer.parseInt(input);
@@ -83,12 +87,22 @@ public class PostFixCalculator {
         }
     }
 
-    private void pushNumberToStack(int number) {
+    private void pushOperandToStack(String operand) {
         if (stack.size() == MAX_STACK_SIZE) {
-            System.err.println("Stack overflow");
+            printOverflowError();
+        } else if (RND.equalsIgnoreCase(operand)) {
+            stack.push(generateRandomNumber());
         } else {
-            stack.push(number);
+            stack.push(Integer.parseInt(operand));
         }
+    }
+
+    private Integer generateRandomNumber() {
+        return 467134654;
+    }
+
+    private void printOverflowError() {
+        System.err.println("Stack overflow");
     }
 
 
