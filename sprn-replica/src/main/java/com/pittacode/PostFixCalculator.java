@@ -10,6 +10,7 @@ import java.util.List;
 public class PostFixCalculator {
 
     private final static int MINIMUM_INPUT = Integer.MIN_VALUE;
+    private final static int MAXIMUM_INPUT = Integer.MAX_VALUE;
 
     // OPERATORS -- modifies stack
     private final static String ADD = "+";
@@ -51,8 +52,7 @@ public class PostFixCalculator {
             // do nothing, we don't add null values
             // we also use it as a way to deal with some errors
             // also, can't add a null to an ArrayDeque
-        }
-        else if (stack.size() == MAX_STACK_SIZE) {
+        } else if (stack.size() == MAX_STACK_SIZE) {
             printOverflowError();
         } else {
             stack.push(operand);
@@ -109,14 +109,14 @@ public class PostFixCalculator {
     }
 
     private Integer add() {
-        Integer operand2 = null;
+        Long operand2 = null;
         try {
-            operand2 = stack.pop();
-            Integer operand1 = stack.pop();
-            return operand1 + operand2;
+            operand2 = (long) stack.pop();
+            Long operand1 = (long) stack.pop();
+            return applyLimits(operand1 + operand2);
         } catch (Exception e) {
             printUnderflowError();
-            return operand2;
+            return operand2 == null ? null : operand2.intValue();
         }
     }
 
@@ -135,6 +135,16 @@ public class PostFixCalculator {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    private Integer applyLimits(Long value) {
+        if (value > MAXIMUM_INPUT) {
+            return MAXIMUM_INPUT;
+        }
+        if (value < MINIMUM_INPUT) {
+            return MINIMUM_INPUT;
+        }
+        return value.intValue();
     }
 
     private void printOverflowError() {
