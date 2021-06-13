@@ -41,9 +41,10 @@ public class PostFixCalculator {
     public void process(String input) {
         if (isAction(input)) {
             executeAction(input);
-        }
-        if (isNumber(input)) {
+        } else if (isNumber(input)) {
             pushNumberToStack(Integer.parseInt(input));
+        } else {
+            System.err.printf("Unrecognised operator or operand \"%s\".%n", input);
         }
     }
 
