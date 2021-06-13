@@ -34,10 +34,6 @@ public class PostFixCalculator {
                                                                1365180540, 1540383426, 304089172, 1303455736,
                                                                35005211, 521595368);
 
-    private static Collection<String> toSet(Collection<String> collection) {
-        return new HashSet<>(collection);
-    }
-
     private final Deque<Integer> stack;
     private int randomIndex;
 
