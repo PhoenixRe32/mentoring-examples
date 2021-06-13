@@ -39,9 +39,38 @@ public class PostFixCalculator {
     }
 
     public void process(String input) {
+        if (isAction(input)) {
+            executeAction(input);
+        }
         if (isNumber(input)) {
             pushNumberToStack(Integer.parseInt(input));
         }
+    }
+
+    private boolean isAction(String input) {
+        return ACTIONS.contains(input);
+    }
+
+    private void executeAction(String input) {
+        if (PRINT_LAST_INPUT.equalsIgnoreCase(input)) {
+            printLastInput();
+        } else if (PRINT_STACK.equalsIgnoreCase(input)) {
+            printStack();
+        } else {
+            System.err.println("Shouldn't get here... In-development error");
+        }
+    }
+
+    private void printLastInput() {
+        if (stack.isEmpty()) {
+            System.out.println("Stack empty.");
+        } else {
+            System.out.println(stack.peek());
+        }
+    }
+
+    private void printStack() {
+        stack.descendingIterator().forEachRemaining(System.out::println);
     }
 
     private boolean isNumber(String input) {
