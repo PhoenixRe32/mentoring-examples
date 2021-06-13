@@ -26,6 +26,8 @@ public class PostFixCalculator {
     private final static String PRINT_LAST_INPUT = "=";
     private final static Collection<String> ACTIONS = toSet(Arrays.asList(PRINT_LAST_INPUT, PRINT_STACK));
 
+    private static final int MAX_STACK_SIZE = 23;
+
     private static Collection<String> toSet(Collection<String> collection) {
         return new HashSet<>(collection);
     }
@@ -38,7 +40,7 @@ public class PostFixCalculator {
 
     public void process(String input) {
         if (isNumber(input)) {
-            stack.push(Integer.parseInt(input));
+            pushNumberToStack(Integer.parseInt(input));
         }
     }
 
@@ -50,5 +52,14 @@ public class PostFixCalculator {
             return false;
         }
     }
+
+    private void pushNumberToStack(int number) {
+        if (stack.size() == MAX_STACK_SIZE) {
+            System.err.println("Stack overflow");
+        } else {
+            stack.push(number);
+        }
+    }
+
 
 }
