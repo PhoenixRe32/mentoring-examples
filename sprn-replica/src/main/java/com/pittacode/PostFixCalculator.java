@@ -45,7 +45,12 @@ public class PostFixCalculator {
 
     // Wrap push operation to implement stack limitation logic
     public void push(Integer operand) {
-        if (stack.size() == MAX_STACK_SIZE) {
+        if (operand == null) {
+            // do nothing, we don't add null values
+            // we also use it as a way to deal with some errors
+            // also, can't add a null to an ArrayDeque
+        }
+        else if (stack.size() == MAX_STACK_SIZE) {
             printOverflowError();
         } else {
             stack.push(operand);
@@ -98,9 +103,15 @@ public class PostFixCalculator {
     }
 
     private Integer add() {
-        Integer operand2 = stack.pop();
-        Integer operand1 = stack.pop();
-        return operand1 + operand2;
+        Integer operand2 = null;
+        try {
+            operand2 = stack.pop();
+            Integer operand1 = stack.pop();
+            return operand1 + operand2;
+        } catch (Exception e) {
+            printUnderflowError();
+            return operand2;
+        }
     }
 
     private void processUnrecognisedInput(String input) {
@@ -122,5 +133,9 @@ public class PostFixCalculator {
 
     private void printOverflowError() {
         System.err.println("Stack overflow");
+    }
+
+    private void printUnderflowError() {
+        System.err.println("Stack underflow");
     }
 }
