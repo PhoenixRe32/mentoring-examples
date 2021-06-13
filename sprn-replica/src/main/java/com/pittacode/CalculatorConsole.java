@@ -50,10 +50,11 @@ public class CalculatorConsole {
 
     private String getInput() throws IOException {
         System.out.print(PROMPT);
-        return reader.readLine();
+        String line = reader.readLine();
+        return line == null ? null : line.trim();
     }
 
     private boolean isExitCommand(String input) {
-        return input == null || EXIT.equalsIgnoreCase(input.trim());
+        return input == null || EXIT.equalsIgnoreCase(input);
     }
 }
