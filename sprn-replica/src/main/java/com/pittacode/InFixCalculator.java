@@ -171,25 +171,17 @@ public class InFixCalculator {
         while (segments.contains(DIV) || segments.contains(MUL)) {
             for (int i = 0; i < segments.size(); i++) {
                 String current = segments.get(i);
-                if (DIV.equals(current)) {
+                if (DIV.equals(current) || MUL.equals(current)) {
                     Long operand1 = Long.parseLong(segments.get(i - 1));
                     Long operand2 = Long.parseLong(segments.get(i + 1));
-                    Integer result = applyLimits(operand1 / operand2);
+                    segments.remove(i - 1);
+                    segments.remove(i - 1);
+                    segments.remove(i - 1);
 
+                    Integer result = DIV.equals(current)
+                            ? applyLimits(operand1 / operand2)
+                            : applyLimits(operand1 * operand2);
                     segments.add(i - 1, result.toString());
-                    segments.remove(i);
-                    segments.remove(i);
-                    segments.remove(i);
-                    break;
-                } else if (MUL.equals(current)) {
-                    Long operand1 = Long.parseLong(segments.get(i - 1));
-                    Long operand2 = Long.parseLong(segments.get(i + 1));
-                    Integer result = applyLimits(operand1 * operand2);
-
-                    segments.add(i - 1, result.toString());
-                    segments.remove(i);
-                    segments.remove(i);
-                    segments.remove(i);
                     break;
                 }
             }
