@@ -2,6 +2,9 @@ package com.pittacode;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Pattern;
 
 public class CalculatorConsole {
@@ -19,6 +22,7 @@ public class CalculatorConsole {
                     + System.lineSeparator();
 
     private final static Pattern SPACES = Pattern.compile(" +");
+    private final static String PRINT_STACK = "d";
 
     private final BufferedReader reader;
     private final PostFixCalculator postFixCalculator;
@@ -41,16 +45,15 @@ public class CalculatorConsole {
     }
 
     private boolean dialog() throws IOException {
-        String input = getInput();
+        String userInput = getInput();
 
-        if (isExitCommand(input)) {
+        if (isExitCommand(userInput)) {
             return false;
         }
 
-        String[] inputs = splitInputAtSpaces(input);
-
-        for (String individualInput : inputs) {
-            postFixCalculator.process(individualInput);
+        List<String> actualInputs = processInput(userInput);
+        for (String actualInput : actualInputs) {
+            postFixCalculator.process(actualInput);
         }
 
         return true;
@@ -66,7 +69,43 @@ public class CalculatorConsole {
         return input == null || EXIT.equalsIgnoreCase(input);
     }
 
-    private String[] splitInputAtSpaces(String input) {
-        return SPACES.split(input);
+    private List<String> processInput(String input) {
+        List<String> actualInputs = new ArrayList<>();
+
+        List<String> subInputs = splitInputAtSpaces(input);
+        for (String subInput : subInputs) {
+            List<String> subInputSegments = splitInputAtPrintStackAction(subInput);
+            actualInputs.addAll(subInputSegments);
+        }
+
+        return actualInputs;
+    }
+
+    private List<String> splitInputAtSpaces(String input) {
+        return Arrays.asList(SPACES.split(input));
+    }
+
+    private List<String> splitInputAtPrintStackAction(String input) {
+        List<String> subInputs = new ArrayList<>();
+        String remainingInput = input;
+        int indexOfPrintStack = remainingInput.indexOf(PRINT_STACK);
+        while (printStackActionIsPresent(indexOfPrintStack)) {
+            String subInputBeforePrintStackAction = remainingInput.substring(0, indexOfPrintStack);
+            if (!subInputBeforePrintStackAction.isEmpty()) {
+                subInputs.add(subInputBeforePrintStackAction);
+            }
+            subInputs.add(PRINT_STACK);
+
+            remainingInput = remainingInput.substring(indexOfPrintStack + 1);
+            indexOfPrintStack = remainingInput.indexOf(PRINT_STACK);
+        }
+        if (!remainingInput.isEmpty()) {
+            subInputs.add(remainingInput);
+        }
+        return subInputs;
+    }
+
+    private boolean printStackActionIsPresent(int indexOfPrintStack) {
+        return indexOfPrintStack != -1;
     }
 }
