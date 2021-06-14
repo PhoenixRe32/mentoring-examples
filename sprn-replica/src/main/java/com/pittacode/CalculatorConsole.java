@@ -23,6 +23,7 @@ public class CalculatorConsole {
 
     private final static Pattern SPACES = Pattern.compile(" +");
     private final static String PRINT_STACK = "d";
+    private final static String PRINT_LAST_INPUT = "=";
 
     private final BufferedReader reader;
     private final PostFixCalculator postFixCalculator;
@@ -70,19 +71,23 @@ public class CalculatorConsole {
     }
 
     private List<String> processInput(String input) {
-        List<String> actualInputs = new ArrayList<>();
-
-        List<String> subInputs = splitInputAtSpaces(input);
-        for (String subInput : subInputs) {
-            List<String> subInputSegments = splitInputAtPrintStackAction(subInput);
-            actualInputs.addAll(subInputSegments);
-        }
+        List<String> actualInputs = splitInputAtSpaces(input);
+        actualInputs = splitEachSubInputAtPrintStackAction(actualInputs);
+        actualInputs = splitStartingPrintLastElementAction(actualInputs);
 
         return actualInputs;
     }
 
     private List<String> splitInputAtSpaces(String input) {
         return Arrays.asList(SPACES.split(input));
+    }
+
+    private List<String> splitEachSubInputAtPrintStackAction(List<String> inputs) {
+        List<String> subInputs = new ArrayList<>();
+        for (String input : inputs) {
+            subInputs.addAll(splitInputAtPrintStackAction(input));
+        }
+        return subInputs;
     }
 
     private List<String> splitInputAtPrintStackAction(String input) {
@@ -101,6 +106,21 @@ public class CalculatorConsole {
         }
         if (!remainingInput.isEmpty()) {
             subInputs.add(remainingInput);
+        }
+        return subInputs;
+    }
+
+    private List<String> splitStartingPrintLastElementAction(List<String> inputs) {
+        List<String> subInputs = new ArrayList<>();
+        for (String input : inputs) {
+            String remainingInput = input;
+            while (remainingInput.startsWith(PRINT_LAST_INPUT)) {
+                subInputs.add(PRINT_LAST_INPUT);
+                remainingInput = remainingInput.substring(1);
+            }
+            if (!remainingInput.isEmpty()) {
+                subInputs.add(remainingInput);
+            }
         }
         return subInputs;
     }
