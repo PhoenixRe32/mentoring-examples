@@ -55,6 +55,7 @@ public class InFixCalculator {
         System.out.println(segments);
         segments = executeMultiDiv(segments);
         System.out.println(segments);
+        segments = executeAddSub(segments);
         return Collections.emptyList();
     }
 
@@ -181,6 +182,28 @@ public class InFixCalculator {
                     Integer result = DIV.equals(current)
                             ? applyLimits(operand1 / operand2)
                             : applyLimits(operand1 * operand2);
+                    segments.add(i - 1, result.toString());
+                    break;
+                }
+            }
+        }
+        return segments;
+    }
+
+    private List<String> executeAddSub(List<String> segments) {
+        while (segments.contains(ADD) || segments.contains(SUB)) {
+            for (int i = 0; i < segments.size(); i++) {
+                String current = segments.get(i);
+                if (ADD.equals(current) || SUB.equals(current)) {
+                    Long operand1 = Long.parseLong(segments.get(i - 1));
+                    Long operand2 = Long.parseLong(segments.get(i + 1));
+                    segments.remove(i - 1);
+                    segments.remove(i - 1);
+                    segments.remove(i - 1);
+
+                    Integer result = ADD.equals(current)
+                            ? applyLimits(operand1 + operand2)
+                            : applyLimits(operand1 - operand2);
                     segments.add(i - 1, result.toString());
                     break;
                 }
