@@ -25,8 +25,8 @@ public class PostFixCalculator {
 
     // ACTIONS -- read only
     private final static String PRINT_STACK = "d";
-    private final static String PRINT_LAST_INPUT = "=";
-    private final static Collection<String> ACTIONS = toSet(Arrays.asList(PRINT_LAST_INPUT, PRINT_STACK));
+    private final static String  PRINT_LATEST_INPUT = "=";
+    private final static Collection<String> ACTIONS = toSet(Arrays.asList( PRINT_LATEST_INPUT, PRINT_STACK));
 
     private static Collection<String> toSet(List<String> list) {
         return new HashSet<>(list);
@@ -79,7 +79,7 @@ public class PostFixCalculator {
 
     public void process(String input) {
         switch (input) {
-            case PRINT_LAST_INPUT:
+            case  PRINT_LATEST_INPUT:
                 printLastInput();
                 break;
             case PRINT_STACK:

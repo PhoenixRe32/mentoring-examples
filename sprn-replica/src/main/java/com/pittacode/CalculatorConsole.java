@@ -25,7 +25,7 @@ public class CalculatorConsole {
     private final static Pattern SPACES = Pattern.compile(" +");
     // TODO look into having one source of truth for these
     private final static String PRINT_STACK = "d";
-    private final static String PRINT_LAST_INPUT = "=";
+    private final static String  PRINT_LATEST_INPUT = "=";
     private final static String RND = "r";
 
     private final BufferedReader reader;
@@ -61,7 +61,7 @@ public class CalculatorConsole {
             if (postFixCalculator.canProcess(actualInput)) {
                 postFixCalculator.process(actualInput);
             } else {
-                System.err.printf("Can't process %s yet", actualInput);
+                inFixCalculator.process(actualInput);
             }
         }
 
@@ -81,7 +81,7 @@ public class CalculatorConsole {
     private List<String> processInput(String input) {
         return splitInputAtSpaces(input).stream()
                                         .flatMap(subInput -> splitInputAtPrintStackAction(subInput).stream())
-                                        .flatMap(subInput -> splitStartingRecognisableToken(subInput, PRINT_STACK).stream())
+                                        .flatMap(subInput -> splitStartingRecognisableToken(subInput, PRINT_LATEST_INPUT).stream())
                                         .flatMap(subInput -> splitStartingRecognisableToken(subInput, RND).stream())
                                         .collect(Collectors.toList());
 
