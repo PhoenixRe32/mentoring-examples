@@ -79,8 +79,8 @@ public class CalculatorConsole {
     private List<String> processInput(String input) {
         return splitInputAtSpaces(input).stream()
                                         .flatMap(subInput -> splitInputAtPrintStackAction(subInput).stream())
-                                        .flatMap(subInput -> splitStartingPrintLastElementAction(subInput).stream())
-                                        .flatMap(subInput -> splitStartingRandomNumber(subInput).stream())
+                                        .flatMap(subInput -> splitStartingRecognisableToken(subInput, PRINT_STACK).stream())
+                                        .flatMap(subInput -> splitStartingRecognisableToken(subInput, RND).stream())
                                         .collect(Collectors.toList());
 
     }
@@ -109,25 +109,11 @@ public class CalculatorConsole {
         return subInputs;
     }
 
-    private List<String> splitStartingPrintLastElementAction(String input) {
+    private List<String> splitStartingRecognisableToken(String input, String recognisableToken) {
         List<String> subInputs = new ArrayList<>();
         String remainingInput = input;
-        while (remainingInput.startsWith(PRINT_LAST_INPUT)) {
-            subInputs.add(PRINT_LAST_INPUT);
-            remainingInput = remainingInput.substring(1);
-        }
-        if (!remainingInput.isEmpty()) {
-            subInputs.add(remainingInput);
-        }
-
-        return subInputs;
-    }
-
-    private List<String> splitStartingRandomNumber(String input) {
-        List<String> subInputs = new ArrayList<>();
-        String remainingInput = input;
-        while (remainingInput.startsWith(RND)) {
-            subInputs.add(RND);
+        while (remainingInput.startsWith(recognisableToken)) {
+            subInputs.add(recognisableToken);
             remainingInput = remainingInput.substring(1);
         }
         if (!remainingInput.isEmpty()) {
