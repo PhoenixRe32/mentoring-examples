@@ -23,8 +23,10 @@ public class CalculatorConsole {
                     + System.lineSeparator();
 
     private final static Pattern SPACES = Pattern.compile(" +");
+    // TODO look into having one source of truth for these
     private final static String PRINT_STACK = "d";
     private final static String PRINT_LAST_INPUT = "=";
+    private final static String RND = "r";
 
     private final BufferedReader reader;
     private final PostFixCalculator postFixCalculator;
@@ -78,6 +80,7 @@ public class CalculatorConsole {
         return splitInputAtSpaces(input).stream()
                                         .flatMap(subInput -> splitInputAtPrintStackAction(subInput).stream())
                                         .flatMap(subInput -> splitStartingPrintLastElementAction(subInput).stream())
+                                        .flatMap(subInput -> splitStartingRandomNumber(subInput).stream())
                                         .collect(Collectors.toList());
 
     }
@@ -111,6 +114,20 @@ public class CalculatorConsole {
         String remainingInput = input;
         while (remainingInput.startsWith(PRINT_LAST_INPUT)) {
             subInputs.add(PRINT_LAST_INPUT);
+            remainingInput = remainingInput.substring(1);
+        }
+        if (!remainingInput.isEmpty()) {
+            subInputs.add(remainingInput);
+        }
+
+        return subInputs;
+    }
+
+    private List<String> splitStartingRandomNumber(String input) {
+        List<String> subInputs = new ArrayList<>();
+        String remainingInput = input;
+        while (remainingInput.startsWith(RND)) {
+            subInputs.add(RND);
             remainingInput = remainingInput.substring(1);
         }
         if (!remainingInput.isEmpty()) {
