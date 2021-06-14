@@ -50,13 +50,13 @@ public class InFixCalculator {
         Deque<String> trailingOperations = getTrailingOperations(segments);
         segments = segments.subList(0, segments.size() - trailingOperations.size());
 
-        System.out.println(segments);
         segments = executePowers(segments);
-        System.out.println(segments);
         segments = executeMultiDiv(segments);
-        System.out.println(segments);
         segments = executeAddSub(segments);
-        return Collections.emptyList();
+
+        ArrayList<String> result = new ArrayList<>(segments);
+        result.addAll(trailingOperations);
+        return result;
     }
 
     private List<String> splitInputIntoSegments(String input) {
