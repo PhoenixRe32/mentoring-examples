@@ -80,7 +80,7 @@ public class PostFixCalculator {
     public void process(String input) {
         switch (input) {
             case  PRINT_LATEST_INPUT:
-                printLastInput();
+                printLatestInput();
                 break;
             case PRINT_STACK:
                 printStack();
@@ -108,7 +108,7 @@ public class PostFixCalculator {
         }
     }
 
-    private void printLastInput() {
+    private void printLatestInput() {
         if (stack.isEmpty()) {
             System.out.println("Stack empty.");
         } else {
