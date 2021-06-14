@@ -34,6 +34,7 @@ public class InFixCalculator {
     public void process(String input) {
         List<String> segments = splitInputIntoSegments(input);
         segments = constructNegativeNumbers(segments);
+        segments = replaceRandoms(segments);
 
     }
 
@@ -81,5 +82,17 @@ public class InFixCalculator {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    private List<String> replaceRandoms(List<String> segments) {
+        List<String> replacedSegments = new ArrayList<>();
+        for (String segment : segments) {
+            if (RND.equals(segment)) {
+                replacedSegments.add(String.valueOf(randomGenerator.getNext()));
+            } else {
+                replacedSegments.add(segment);
+            }
+        }
+        return replacedSegments;
     }
 }
