@@ -48,6 +48,10 @@ public class InFixCalculator {
                 start = i + 1;
             }
         }
+        String substringSoFar = input.substring(start);
+        if (!substringSoFar.isEmpty()) {
+            segments.add(substringSoFar);
+        }
         return segments;
     }
 }
