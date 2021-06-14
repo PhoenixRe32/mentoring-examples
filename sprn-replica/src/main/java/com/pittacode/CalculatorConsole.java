@@ -2,6 +2,7 @@ package com.pittacode;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.regex.Pattern;
 
 public class CalculatorConsole {
 
@@ -39,11 +40,16 @@ public class CalculatorConsole {
 
     private boolean dialog() throws IOException {
         String input = getInput();
+
         if (isExitCommand(input)) {
             return false;
         }
 
-        postFixCalculator.process(input);
+        String[] inputs = splitInputAtSpaces(input);
+
+        for (String individualInput : inputs) {
+            postFixCalculator.process(individualInput);
+        }
 
         return true;
     }
@@ -56,5 +62,9 @@ public class CalculatorConsole {
 
     private boolean isExitCommand(String input) {
         return input == null || EXIT.equalsIgnoreCase(input);
+    }
+
+    private String[] splitInputAtSpaces(String input) {
+        return input.split(" +");
     }
 }
