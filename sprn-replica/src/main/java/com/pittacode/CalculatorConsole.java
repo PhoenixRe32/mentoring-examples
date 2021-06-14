@@ -18,6 +18,8 @@ public class CalculatorConsole {
                     + System.lineSeparator()
                     + System.lineSeparator();
 
+    private final static Pattern SPACES = Pattern.compile(" +");
+
     private final BufferedReader reader;
     private final PostFixCalculator postFixCalculator;
 
@@ -65,6 +67,6 @@ public class CalculatorConsole {
     }
 
     private String[] splitInputAtSpaces(String input) {
-        return input.split(" +");
+        return SPACES.split(input);
     }
 }
