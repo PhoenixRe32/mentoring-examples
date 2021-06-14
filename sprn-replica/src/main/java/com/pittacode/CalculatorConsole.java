@@ -30,10 +30,12 @@ public class CalculatorConsole {
 
     private final BufferedReader reader;
     private final PostFixCalculator postFixCalculator;
+    private final InFixCalculator inFixCalculator;
 
-    public CalculatorConsole(BufferedReader reader, PostFixCalculator postFixCalculator) {
+    public CalculatorConsole(BufferedReader reader, PostFixCalculator postFixCalculator, InFixCalculator inFixCalculator) {
         this.reader = reader;
         this.postFixCalculator = postFixCalculator;
+        this.inFixCalculator = inFixCalculator;
     }
 
     public void start() throws IOException {

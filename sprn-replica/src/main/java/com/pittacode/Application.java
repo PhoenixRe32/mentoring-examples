@@ -10,9 +10,10 @@ public class Application {
         // Dependencies
         BufferedReader terminalReader = new BufferedReader(new InputStreamReader(System.in));
         PostFixCalculator postFixCalculator = new PostFixCalculator();
+        InFixCalculator inFixCalculator = new InFixCalculator();
 
         // Build actual application
-        CalculatorConsole calculatorConsole = new CalculatorConsole(terminalReader, postFixCalculator);
+        CalculatorConsole calculatorConsole = new CalculatorConsole(terminalReader, postFixCalculator, inFixCalculator);
 
         // Start it
         calculatorConsole.start();
