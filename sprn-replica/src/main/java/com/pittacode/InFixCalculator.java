@@ -35,6 +35,8 @@ public class InFixCalculator {
         List<String> segments = splitInputIntoSegments(input);
         segments = constructNegativeNumbers(segments);
         segments = replaceRandoms(segments);
+        segments = executePrintLatestInput(segments);
+        System.out.println(segments);
 
     }
 
@@ -94,5 +96,26 @@ public class InFixCalculator {
             }
         }
         return replacedSegments;
+    }
+
+    private List<String> executePrintLatestInput(List<String> segments) {
+        List<String> reducedSegments = new ArrayList<>();
+        for (String segment : segments) {
+            if (PRINT_LATEST_INPUT.equals(segment)) {
+                System.out.println(findLatestInput(reducedSegments));
+            } else {
+                reducedSegments.add(segment);
+            }
+        }
+        return reducedSegments;
+    }
+
+    private String findLatestInput(List<String> reducedSegments) {
+        for (int i = reducedSegments.size() - 1; i >= 0; i--) {
+            if (isNumber(reducedSegments.get(i))) {
+                return reducedSegments.get(i);
+            }
+        }
+        throw new IllegalStateException("Should not get here");
     }
 }
