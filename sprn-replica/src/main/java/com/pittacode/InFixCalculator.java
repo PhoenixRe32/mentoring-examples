@@ -1,9 +1,11 @@
 package com.pittacode;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Deque;
 import java.util.HashSet;
 import java.util.List;
 
@@ -37,11 +39,14 @@ public class InFixCalculator {
     }
 
     public List<String> process(String input) {
+
         List<String> segments = splitInputIntoSegments(input);
         segments = constructNegativeNumbers(segments);
         segments = replaceRandoms(segments);
         segments = executePrintLatestInput(segments);
-        System.out.println(segments);
+
+        Deque<String> trailingOperations = getTrailingOperations(segments);
+        segments = segments.subList(0, segments.size() - trailingOperations.size());
 
         return Collections.emptyList();
     }
@@ -75,6 +80,8 @@ public class InFixCalculator {
                 if (RECOGNISABLE_TOKENS.contains(segments.get(i - 1)) && i + 1 < segments.size() && isNumber(segments.get(i + 1))) {
                     reducedSegments.add(segments.get(i) + segments.get(i + 1));
                     i++;
+                } else {
+                    reducedSegments.add(segments.get(i));
                 }
             } else {
                 reducedSegments.add(segments.get(i));
@@ -123,5 +130,15 @@ public class InFixCalculator {
             }
         }
         throw new IllegalStateException("Should not get here");
+    }
+
+    private Deque<String> getTrailingOperations(List<String> segments) {
+        Deque<String> trailingOperations = new ArrayDeque<>();
+        int i = segments.size() - 1;
+        while (i >= 0 && OPERATORS.contains(segments.get(i))) {
+            trailingOperations.push(segments.get(i));
+            i--;
+        }
+        return trailingOperations;
     }
 }
