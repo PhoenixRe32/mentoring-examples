@@ -60,18 +60,30 @@ public class CalculatorConsole {
         for (String actualInput : actualInputs) {
             if (postFixCalculator.canProcess(actualInput)) {
                 postFixCalculator.process(actualInput);
-            } else if (inFixCalculator.startsWithOperation(actualInput)) {
-                Integer missingOperand = postFixCalculator.pop();
-                String correctedInput = missingOperand == null
-                        ? actualInput.substring(1)
-                        : String.format("%s%s", missingOperand, actualInput);
-                inFixCalculator.process(correctedInput);
             } else {
-                inFixCalculator.process(actualInput);
+                List<String> resultingInput = processComplexInput(actualInput);
+                for (String subInput : resultingInput) {
+                    if (postFixCalculator.canProcess(subInput)) {
+                        postFixCalculator.process(subInput);
+                    } else {
+                        System.err.printf("Unrecognised operator or operand \"%s\".%n", subInput);
+                    }
+                }
             }
         }
-
         return true;
+    }
+
+    private List<String> processComplexInput(String actualInput) {
+        if (!inFixCalculator.startsWithOperation(actualInput)) {
+            return inFixCalculator.process(actualInput);
+        }
+
+        Integer missingOperand = postFixCalculator.pop();
+        String correctedInput = missingOperand == null
+                ? actualInput.substring(1)
+                : String.format("%s%s", missingOperand, actualInput);
+        return inFixCalculator.process(correctedInput);
     }
 
     private String getInput() throws IOException {

@@ -3,6 +3,7 @@ package com.pittacode;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
@@ -35,13 +36,14 @@ public class InFixCalculator {
         return OPERATORS.contains(String.valueOf(input.charAt(0)));
     }
 
-    public void process(String input) {
+    public List<String> process(String input) {
         List<String> segments = splitInputIntoSegments(input);
         segments = constructNegativeNumbers(segments);
         segments = replaceRandoms(segments);
         segments = executePrintLatestInput(segments);
         System.out.println(segments);
 
+        return Collections.emptyList();
     }
 
     private List<String> splitInputIntoSegments(String input) {
