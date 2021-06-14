@@ -18,6 +18,7 @@ public class PostFixCalculator {
     private final static String DIV = "/";
     private final static String MUL = "*";
     private final static String POW = "^";
+    private final static Collection<String> OPERATORS = toSet(Arrays.asList(ADD, SUB, DIV, MUL, POW));
 
     // OPERAND -- modifies stack
     private final static String RND = "r";
@@ -25,6 +26,11 @@ public class PostFixCalculator {
     // ACTIONS -- read only
     private final static String PRINT_STACK = "d";
     private final static String PRINT_LAST_INPUT = "=";
+    private final static Collection<String> ACTIONS = toSet(Arrays.asList(PRINT_LAST_INPUT, PRINT_STACK));
+
+    private static Collection<String> toSet(List<String> list) {
+        return new HashSet<>(list);
+    }
 
     private static final int MAX_STACK_SIZE = 23;
     private static final List<Integer> RANDOMS = Arrays.asList(1804289383, 846930886, 1681692777, 1714636915,
@@ -56,19 +62,19 @@ public class PostFixCalculator {
     }
 
     public boolean canProcess(String input) {
-        switch (input) {
-            case PRINT_LAST_INPUT:
-            case PRINT_STACK:
-            case RND:
-            case ADD:
-            case SUB:
-            case DIV:
-            case MUL:
-            case POW:
-                return true;
-            default:
-                return !input.startsWith(ADD) && isNumber(input);
-        }
+        return isOperator(input) || isAction(input) || isNumericalInput(input);
+    }
+
+    private boolean isOperator(String input) {
+        return OPERATORS.contains(input);
+    }
+
+    private boolean isAction(String input) {
+        return ACTIONS.contains(input);
+    }
+
+    private boolean isNumericalInput(String input) {
+        return RND.equals(input) || (!input.startsWith(ADD) && isNumber(input));
     }
 
     public void process(String input) {
