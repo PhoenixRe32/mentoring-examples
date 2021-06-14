@@ -15,9 +15,9 @@ public class InFixCalculator {
     private final static String MUL = "*";
     private final static String POW = "^";
     private final static Collection<String> OPERATORS = toSet(Arrays.asList(ADD, SUB, DIV, MUL, POW));
-    // OPERAND -- modifies stack
+    // This is replaced by actual values
     private final static String RND = "r";
-    // ACTIONS -- read only
+    // This is executed before the infix operations and is removed
     private final static String PRINT_LATEST_INPUT = "=";
     private final static Collection<String> RECOGNISABLE_TOKENS = toSet(Arrays.asList(ADD, SUB, DIV, MUL, POW, RND, PRINT_LATEST_INPUT));
 
