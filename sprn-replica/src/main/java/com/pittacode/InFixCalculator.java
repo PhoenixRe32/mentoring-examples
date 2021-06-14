@@ -30,7 +30,8 @@ public class InFixCalculator {
 
     public void process(String input) {
         List<String> segments = splitInputIntoSegments(input);
-        System.out.println(segments);
+        segments = constructNegativeNumbers(segments);
+
     }
 
     private List<String> splitInputIntoSegments(String input) {
@@ -53,5 +54,29 @@ public class InFixCalculator {
             segments.add(substringSoFar);
         }
         return segments;
+    }
+
+    private List<String> constructNegativeNumbers(List<String> segments) {
+        List<String> reducedSegments = new ArrayList<>();
+        for (int i = 0; i < segments.size(); i++) {
+            if (SUB.equals(segments.get(i))) {
+                if (RECOGNISABLE_TOKENS.contains(segments.get(i - 1)) && i + 1 < segments.size() && isNumber(segments.get(i + 1))) {
+                    reducedSegments.add(segments.get(i) + segments.get(i + 1));
+                    i++;
+                }
+            } else {
+                reducedSegments.add(segments.get(i));
+            }
+        }
+        return reducedSegments;
+    }
+
+    private boolean isNumber(String input) {
+        try {
+            Long.parseLong(input);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 }
