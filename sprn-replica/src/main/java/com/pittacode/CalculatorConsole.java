@@ -36,7 +36,6 @@ public class CalculatorConsole {
 
     public void start() throws IOException {
         System.out.println(INTRO);
-        ;
 
         boolean isStillRunning = true;
         while (isStillRunning) {
@@ -55,7 +54,11 @@ public class CalculatorConsole {
 
         List<String> actualInputs = processInput(userInput);
         for (String actualInput : actualInputs) {
-            postFixCalculator.process(actualInput);
+            if (postFixCalculator.canProcess(actualInput)) {
+                postFixCalculator.process(actualInput);
+            } else {
+                System.err.printf("Can't process %s yet", actualInput);
+            }
         }
 
         return true;

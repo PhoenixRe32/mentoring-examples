@@ -55,6 +55,22 @@ public class PostFixCalculator {
         }
     }
 
+    public boolean canProcess(String input) {
+        switch (input) {
+            case PRINT_LAST_INPUT:
+            case PRINT_STACK:
+            case RND:
+            case ADD:
+            case SUB:
+            case DIV:
+            case MUL:
+            case POW:
+                return true;
+            default:
+                return !input.startsWith(ADD) && isNumber(input);
+        }
+    }
+
     public void process(String input) {
         switch (input) {
             case PRINT_LAST_INPUT:
