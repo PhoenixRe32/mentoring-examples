@@ -11,6 +11,9 @@ import java.util.List;
 
 public class InFixCalculator {
 
+    private final static int MINIMUM_INPUT = Integer.MIN_VALUE;
+    private final static int MAXIMUM_INPUT = Integer.MAX_VALUE;
+
     // OPERATORS -- modifies stack
     private final static String ADD = "+";
     private final static String SUB = "-";
@@ -39,7 +42,6 @@ public class InFixCalculator {
     }
 
     public List<String> process(String input) {
-
         List<String> segments = splitInputIntoSegments(input);
         segments = constructNegativeNumbers(segments);
         segments = replaceRandoms(segments);
@@ -48,6 +50,9 @@ public class InFixCalculator {
         Deque<String> trailingOperations = getTrailingOperations(segments);
         segments = segments.subList(0, segments.size() - trailingOperations.size());
 
+        segments = executePowers(segments);
+
+        System.out.println(segments);
         return Collections.emptyList();
     }
 
@@ -140,5 +145,37 @@ public class InFixCalculator {
             i--;
         }
         return trailingOperations;
+    }
+
+    private List<String> executePowers(List<String> segments) {
+        int powerOperationIndex = segments.indexOf(POW);
+        while (powerOperationIndex != -1) {
+            String operand1 = segments.get(powerOperationIndex - 1);
+            String operand2 = segments.get(powerOperationIndex + 1);
+            Integer result = applyLimits(Math.pow(Double.parseDouble(operand1), Double.parseDouble(operand2)));
+
+            segments.add(powerOperationIndex - 1, result.toString());
+            segments.remove(powerOperationIndex);
+            segments.remove(powerOperationIndex);
+            segments.remove(powerOperationIndex);
+
+            powerOperationIndex = segments.indexOf(POW);
+        }
+
+        return segments;
+    }
+
+    private Integer applyLimits(Double value) {
+        return applyLimits(value.longValue());
+    }
+
+    private Integer applyLimits(Long value) {
+        if (value > MAXIMUM_INPUT) {
+            return MAXIMUM_INPUT;
+        }
+        if (value < MINIMUM_INPUT) {
+            return MINIMUM_INPUT;
+        }
+        return value.intValue();
     }
 }
