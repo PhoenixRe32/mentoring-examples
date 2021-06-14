@@ -50,8 +50,10 @@ public class InFixCalculator {
         Deque<String> trailingOperations = getTrailingOperations(segments);
         segments = segments.subList(0, segments.size() - trailingOperations.size());
 
+        System.out.println(segments);
         segments = executePowers(segments);
-
+        System.out.println(segments);
+        segments = executeMultiDiv(segments);
         System.out.println(segments);
         return Collections.emptyList();
     }
@@ -162,6 +164,36 @@ public class InFixCalculator {
             powerOperationIndex = segments.indexOf(POW);
         }
 
+        return segments;
+    }
+
+    private List<String> executeMultiDiv(List<String> segments) {
+        while (segments.contains(DIV) || segments.contains(MUL)) {
+            for (int i = 0; i < segments.size(); i++) {
+                String current = segments.get(i);
+                if (DIV.equals(current)) {
+                    Long operand1 = Long.parseLong(segments.get(i - 1));
+                    Long operand2 = Long.parseLong(segments.get(i + 1));
+                    Integer result = applyLimits(operand1 / operand2);
+
+                    segments.add(i - 1, result.toString());
+                    segments.remove(i);
+                    segments.remove(i);
+                    segments.remove(i);
+                    break;
+                } else if (MUL.equals(current)) {
+                    Long operand1 = Long.parseLong(segments.get(i - 1));
+                    Long operand2 = Long.parseLong(segments.get(i + 1));
+                    Integer result = applyLimits(operand1 * operand2);
+
+                    segments.add(i - 1, result.toString());
+                    segments.remove(i);
+                    segments.remove(i);
+                    segments.remove(i);
+                    break;
+                }
+            }
+        }
         return segments;
     }
 
