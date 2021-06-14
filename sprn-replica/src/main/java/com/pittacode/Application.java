@@ -9,8 +9,9 @@ public class Application {
     public static void main(String[] args) throws IOException {
         // Dependencies
         BufferedReader terminalReader = new BufferedReader(new InputStreamReader(System.in));
-        PostFixCalculator postFixCalculator = new PostFixCalculator();
-        InFixCalculator inFixCalculator = new InFixCalculator();
+        RandomGenerator randomGenerator = new RandomGenerator();
+        PostFixCalculator postFixCalculator = new PostFixCalculator(randomGenerator);
+        InFixCalculator inFixCalculator = new InFixCalculator(randomGenerator);
 
         // Build actual application
         CalculatorConsole calculatorConsole = new CalculatorConsole(terminalReader, postFixCalculator, inFixCalculator);

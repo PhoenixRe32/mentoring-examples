@@ -15,14 +15,17 @@ public class InFixCalculator {
     private final static String MUL = "*";
     private final static String POW = "^";
     private final static Collection<String> OPERATORS = toSet(Arrays.asList(ADD, SUB, DIV, MUL, POW));
-
     // OPERAND -- modifies stack
     private final static String RND = "r";
-
     // ACTIONS -- read only
     private final static String PRINT_LATEST_INPUT = "=";
-
     private final static Collection<String> RECOGNISABLE_TOKENS = toSet(Arrays.asList(ADD, SUB, DIV, MUL, POW, RND, PRINT_LATEST_INPUT));
+
+    private final RandomGenerator randomGenerator;
+
+    public InFixCalculator(RandomGenerator randomGenerator) {
+        this.randomGenerator = randomGenerator;
+    }
 
     private static Collection<String> toSet(List<String> list) {
         return new HashSet<>(list);

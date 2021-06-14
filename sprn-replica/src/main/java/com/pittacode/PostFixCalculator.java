@@ -19,10 +19,8 @@ public class PostFixCalculator {
     private final static String MUL = "*";
     private final static String POW = "^";
     private final static Collection<String> OPERATORS = toSet(Arrays.asList(ADD, SUB, DIV, MUL, POW));
-
     // OPERAND -- modifies stack
     private final static String RND = "r";
-
     // ACTIONS -- read only
     private final static String PRINT_STACK = "d";
     private final static String  PRINT_LATEST_INPUT = "=";
@@ -33,19 +31,13 @@ public class PostFixCalculator {
     }
 
     private static final int MAX_STACK_SIZE = 23;
-    private static final List<Integer> RANDOMS = Arrays.asList(1804289383, 846930886, 1681692777, 1714636915,
-                                                               1957747793, 424238335, 719885386, 1649760492,
-                                                               596516649, 1189641421, 1025202362, 1350490027,
-                                                               783368690, 1102520059, 2044897763, 1967513926,
-                                                               1365180540, 1540383426, 304089172, 1303455736,
-                                                               35005211, 521595368);
 
     private final Deque<Integer> stack;
-    private int randomIndex;
+    private final RandomGenerator randomGenerator;
 
-    public PostFixCalculator() {
+    public PostFixCalculator(RandomGenerator randomGenerator) {
         this.stack = new ArrayDeque<>();
-        this.randomIndex = 0;
+        this.randomGenerator = randomGenerator;
     }
 
     // Wrap push operation to implement stack limitation logic
@@ -124,10 +116,8 @@ public class PostFixCalculator {
         }
     }
 
-    private Long randomNumber() {
-        Integer nextRandom = RANDOMS.get(randomIndex);
-        randomIndex = (randomIndex + 1) % RANDOMS.size();
-        return (long) nextRandom;
+    private long randomNumber() {
+        return randomGenerator.getNext();
     }
 
     private Long add() {
