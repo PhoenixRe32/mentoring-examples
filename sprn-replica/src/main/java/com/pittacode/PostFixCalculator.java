@@ -40,6 +40,14 @@ public class PostFixCalculator {
         this.randomGenerator = randomGenerator;
     }
 
+    public Integer pop() {
+        Integer topStackElement = stack.poll();
+        if (topStackElement == null) {
+            printUnderflowError();
+        }
+        return topStackElement;
+    }
+
     // Wrap push operation to implement stack limitation logic
     public void push(Long operand) {
         if (operand == null) {

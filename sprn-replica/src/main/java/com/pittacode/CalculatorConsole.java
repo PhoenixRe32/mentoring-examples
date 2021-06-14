@@ -25,7 +25,7 @@ public class CalculatorConsole {
     private final static Pattern SPACES = Pattern.compile(" +");
     // TODO look into having one source of truth for these
     private final static String PRINT_STACK = "d";
-    private final static String  PRINT_LATEST_INPUT = "=";
+    private final static String PRINT_LATEST_INPUT = "=";
     private final static String RND = "r";
 
     private final BufferedReader reader;
@@ -60,6 +60,12 @@ public class CalculatorConsole {
         for (String actualInput : actualInputs) {
             if (postFixCalculator.canProcess(actualInput)) {
                 postFixCalculator.process(actualInput);
+            } else if (inFixCalculator.startsWithOperation(actualInput)) {
+                Integer missingOperand = postFixCalculator.pop();
+                String correctedInput = missingOperand == null
+                        ? actualInput.substring(1)
+                        : String.format("%s%s", missingOperand, actualInput);
+                inFixCalculator.process(correctedInput);
             } else {
                 inFixCalculator.process(actualInput);
             }

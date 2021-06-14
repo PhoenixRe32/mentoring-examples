@@ -31,6 +31,10 @@ public class InFixCalculator {
         return new HashSet<>(list);
     }
 
+    public boolean startsWithOperation(String input) {
+        return OPERATORS.contains(String.valueOf(input.charAt(0)));
+    }
+
     public void process(String input) {
         List<String> segments = splitInputIntoSegments(input);
         segments = constructNegativeNumbers(segments);
