@@ -1,7 +1,5 @@
 package com.pittacode.obstruction;
 
-import static java.lang.String.format;
-
 public class Round {
 
     private final String[][] board;
@@ -11,7 +9,9 @@ public class Round {
     }
 
     public void play(int x, int y, String player) {
-        board[x][y] = player;
+        if (board[x][y] == null) {
+            board[x][y] = player;
+        }
     }
 
     public String[][] getBoard() {

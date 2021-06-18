@@ -20,4 +20,12 @@ class RoundTest {
 
         assertThat(underTest.getBoard()[0][0]).isEqualTo("A");
     }
+
+    @Test
+    void shouldNotUpdateBoardWhenAMoveIsPlayedOnExistingMove() {
+        underTest.play(1, 0, "A");
+        underTest.play(1, 0, "B");
+
+        assertThat(underTest.getBoard()[1][0]).isEqualTo("A");
+    }
 }
