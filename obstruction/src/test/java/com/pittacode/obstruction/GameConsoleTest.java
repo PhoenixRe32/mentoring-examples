@@ -19,7 +19,7 @@ public class GameConsoleTest {
         BufferedReader inputReader = new BufferedReader(new StringReader("0 0"));
         GameConsole underTest = new GameConsole(outputStream, inputReader);
 
-        underTest.roundQuestion("A");
+        underTest.askForMove("A");
 
         assertThat(outputStreamCaptor.toString()).isEqualTo("Make your move, A> ");
     }
@@ -36,23 +36,23 @@ public class GameConsoleTest {
         BufferedReader inputReader = new BufferedReader(new StringReader(linesOfInput));
         GameConsole underTest = new GameConsole(outputStream, inputReader);
 
-        Tile tile = underTest.roundQuestion("A");
+        Tile tile = underTest.askForMove("A");
         assertThat(tile.x).isEqualTo(3);
         assertThat(tile.y).isEqualTo(4);
 
-        tile = underTest.roundQuestion("A");
+        tile = underTest.askForMove("A");
         assertThat(tile.x).isEqualTo(3);
         assertThat(tile.y).isEqualTo(4);
 
-        tile = underTest.roundQuestion("A");
+        tile = underTest.askForMove("A");
         assertThat(tile.x).isEqualTo(3);
         assertThat(tile.y).isEqualTo(4);
 
-        tile = underTest.roundQuestion("A");
+        tile = underTest.askForMove("A");
         assertThat(tile.x).isEqualTo(3);
         assertThat(tile.y).isEqualTo(4);
 
-        tile = underTest.roundQuestion("A");
+        tile = underTest.askForMove("A");
         assertThat(tile.x).isEqualTo(3);
         assertThat(tile.y).isEqualTo(4);
     }
