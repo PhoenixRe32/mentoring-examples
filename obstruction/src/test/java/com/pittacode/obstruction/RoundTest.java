@@ -57,4 +57,15 @@ class RoundTest {
 
         assertThat(isSuccessful).isFalse();
     }
+
+    @Test
+    void shouldGenerateEmptyBoardWhenJustCreatedBeforeAnyMovesPlayed() {
+        underTest = new Round(2, 2);
+
+        assertThat(underTest.getBoard()).isDeepEqualTo(new String[][]{
+                {"", ""},
+                {"", ""}
+        });
+    }
+
 }
