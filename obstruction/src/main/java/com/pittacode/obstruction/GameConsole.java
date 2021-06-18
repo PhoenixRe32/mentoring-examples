@@ -3,6 +3,9 @@ package com.pittacode.obstruction;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.Arrays;
+
+import static java.lang.String.format;
 
 public class GameConsole {
 
@@ -29,30 +32,36 @@ public class GameConsole {
         return playerName.substring(0, Math.min(3, playerName.length()));
     }
 
-    public Dimensions askForGameDimensions() throws IOException {
-        outputStream.print("What are the game dimensions> ");
-        String input = inputReader.readLine();
-
-        return convertIntoDimensions(input);
+    public Dimensions askForGameDimensions() {
+        int[] numbers = askForTwoNumbers(buildDialog("What are the board dimensions> "), 1);
+        return new Dimensions(numbers[0], numbers[1]);
     }
 
-    private Dimensions convertIntoDimensions(String input) {
-        String[] dimensions = input.trim().split(" +");
-        return new Dimensions(Integer.parseInt(dimensions[0]),
-                              Integer.parseInt(dimensions[1]));
+    public Tile askForMove(String player) {
+        int[] numbers = askForTwoNumbers(buildDialog(format("Make your move, %s> ", player)), 0);
+        return new Tile(numbers[0], numbers[1]);
     }
 
-    public Tile askForMove(String player) throws IOException {
-        outputStream.printf("Make your move, %s> ", player);
-        String input = inputReader.readLine();
-
-        return convertIntoTile(input);
+    private ConsoleTokenisedInputSupplier buildDialog(String prompt) {
+        return () -> {
+            outputStream.print(prompt);
+            String input = inputReader.readLine();
+            return input.trim().split(" +");
+        };
     }
 
-    private Tile convertIntoTile(String input) {
-        String[] coordinates = input.trim().split(" +");
-        return new Tile(Integer.parseInt(coordinates[0]),
-                        Integer.parseInt(coordinates[1]));
+    private int[] askForTwoNumbers(ConsoleTokenisedInputSupplier dialog, int minimumValue) {
+        int[] result = new int[2];
+        do try {
+            String[] numbers = dialog.get();
+            result[0] = Integer.parseInt(numbers[0]);
+            result[1] = Integer.parseInt(numbers[1]);
+        } catch (Exception e) {
+            outputStream.println("Something went wrong.");
+            outputStream.printf("Please input two numbers greater than %d, separated by a space. E.g. 9 8%n", minimumValue);
+        } while (!Arrays.stream(result).allMatch(i -> i >= minimumValue));
+
+        return result;
     }
 
     public void printBoard(int roundNumber, String roundBoard) {
