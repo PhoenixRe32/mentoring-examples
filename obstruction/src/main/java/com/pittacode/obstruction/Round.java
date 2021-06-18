@@ -68,7 +68,14 @@ public class Round {
     }
 
     public String[][] getBoard() {
-        return board.clone();
+        String[][] boardCopy = new String[board.length][board[0].length];
+
+        for (int i = 0; i < board.length; i++) {
+            String[] boardColumn = board[i];
+            boardCopy[i] = Arrays.copyOf(boardColumn, board[0].length);
+        }
+
+        return boardCopy;
     }
 
     public String getMovePlayer() {

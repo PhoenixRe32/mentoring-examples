@@ -120,4 +120,16 @@ class RoundTest {
 
         assertThat(currentRound.getBoard()[2][0]).isEqualTo("A");
     }
+
+    @Test
+    void shouldOnlyUpdateBoardOfNewBoardWhenPlayingAMove() {
+        Round previousRound = new Round(3, 3);
+        previousRound.play(2, 0, "A");
+
+        Round currentRound = new Round(previousRound);
+        currentRound.play(2, 2, "B");
+
+        assertThat(currentRound.getBoard()[2][2]).isEqualTo("B");
+        assertThat(previousRound.getBoard()[2][2]).isEqualTo("");
+    }
 }
