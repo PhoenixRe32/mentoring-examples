@@ -29,9 +29,9 @@ class RoundTest {
     void shouldReportSuccessOfMoveWhenAMoveIsPlayed() {
         Round underTest = new Round(3, 3);
 
-        boolean isSuccessful = underTest.play(0, 0, "A");
+        boolean isMoveValid = underTest.play(0, 0, "A");
 
-        assertThat(isSuccessful).isTrue();
+        assertThat(isMoveValid).isTrue();
     }
 
     @Test
@@ -39,27 +39,27 @@ class RoundTest {
         Round underTest = new Round(3, 3);
 
         underTest.play(1, 0, "A");
-        boolean isSuccessful = underTest.play(1, 0, "B");
+        boolean isMoveValid = underTest.play(1, 0, "B");
 
-        assertThat(isSuccessful).isFalse();
+        assertThat(isMoveValid).isFalse();
     }
 
     @Test
     void shouldReportFailureOfMoveWhenAMoveIsInvalidInX() {
         Round underTest = new Round(3, 3);
 
-        boolean isSuccessful = underTest.play(-1, 0, "B");
+        boolean isMoveValid = underTest.play(-1, 0, "B");
 
-        assertThat(isSuccessful).isFalse();
+        assertThat(isMoveValid).isFalse();
     }
 
     @Test
     void shouldReportFailureOfMoveWhenAMoveIsInvalidInY() {
         Round underTest = new Round(3, 3);
 
-        boolean isSuccessful = underTest.play(0, 100, "B");
+        boolean isMoveValid = underTest.play(0, 100, "B");
 
-        assertThat(isSuccessful).isFalse();
+        assertThat(isMoveValid).isFalse();
     }
 
     @Test
@@ -131,5 +131,16 @@ class RoundTest {
 
         assertThat(currentRound.getBoard()[2][2]).isEqualTo("B");
         assertThat(previousRound.getBoard()[2][2]).isEqualTo("");
+    }
+
+    @Test
+    void shouldNoBeAbleToPlayOnDeadTiles() {
+        Round previousRound = new Round(3, 3);
+        previousRound.play(0, 0, "A");
+
+        Round currentRound = new Round(previousRound);
+        boolean isMoveValid = currentRound.play(0, 1, "B");
+
+        assertThat(isMoveValid).isFalse();
     }
 }
