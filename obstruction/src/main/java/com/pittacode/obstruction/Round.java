@@ -16,6 +16,10 @@ public class Round {
         }
     }
 
+    public Round(Round previousRound) {
+        board = previousRound.getBoard();
+    }
+
     public boolean play(int x, int y, String player) {
         movePlayer = player;
 
