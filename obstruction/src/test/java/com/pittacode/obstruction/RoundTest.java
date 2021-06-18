@@ -68,4 +68,14 @@ class RoundTest {
         });
     }
 
+    @Test
+    void shouldMarkSurroundingTilesOfPlayedTileAsDead() {
+        underTest.play(1, 1, "B");
+
+        assertThat(underTest.getBoard()).isDeepEqualTo(new String[][]{
+                {"X", "X", "X"},
+                {"X", "B", "X"},
+                {"X", "X", "X"}
+        });
+    }
 }
