@@ -6,29 +6,29 @@ import static java.lang.String.format;
 
 public class Round {
 
+    private final String roundPlayer;
     private final String[][] board;
-    private String movePlayer;
 
-    public Round(int xLength, int yLength) {
-        board = new String[xLength][yLength];
+    public Round(int xLength, int yLength, String roundPlayer) {
+        this.roundPlayer = roundPlayer;
+        this.board = new String[xLength][yLength];
         for (int x = 0; x < xLength; x++) {
             Arrays.fill(board[x], "");
         }
     }
 
-    public Round(Round previousRound) {
-        board = previousRound.getBoard();
+    public Round(Round previousRound, String roundPlayer) {
+        this.roundPlayer = roundPlayer;
+        this.board = previousRound.getBoard();
     }
 
-    public boolean play(int x, int y, String player) {
-        movePlayer = player;
-
+    public boolean play(int x, int y) {
         if (areCoordinatesInvalid(x, y)) {
             return false;
         }
 
         if (board[x][y].isEmpty()) {
-            board[x][y] = player;
+            board[x][y] = roundPlayer;
             markDeadSpace(x, y);
             return true;
         }
@@ -78,7 +78,7 @@ public class Round {
         return boardCopy;
     }
 
-    public String getMovePlayer() {
-        return movePlayer;
+    public String getRoundPlayer() {
+        return roundPlayer;
     }
 }
