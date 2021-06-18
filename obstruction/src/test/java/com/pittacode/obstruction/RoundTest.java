@@ -91,4 +91,11 @@ class RoundTest {
                 //@formatter:on
         );
     }
+
+    @Test
+    void shouldKnowWhoPlayedTheMoveThatResultedInTheBoard() {
+        underTest.play(2, 1, "V");
+
+        assertThat(underTest.getMovePlayer()).isEqualTo("V");
+    }
 }

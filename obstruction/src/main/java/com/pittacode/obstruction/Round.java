@@ -7,6 +7,7 @@ import static java.lang.String.format;
 public class Round {
 
     private final String[][] board;
+    private String movePlayer;
 
     public Round(int xLength, int yLength) {
         board = new String[xLength][yLength];
@@ -16,6 +17,8 @@ public class Round {
     }
 
     public boolean play(int x, int y, String player) {
+        movePlayer = player;
+
         if (areCoordinatesInvalid(x, y)) {
             return false;
         }
@@ -62,5 +65,9 @@ public class Round {
 
     public String[][] getBoard() {
         return board.clone();
+    }
+
+    public String getMovePlayer() {
+        return movePlayer;
     }
 }
