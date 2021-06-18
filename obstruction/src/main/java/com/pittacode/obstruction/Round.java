@@ -9,12 +9,20 @@ public class Round {
     }
 
     public boolean play(int x, int y, String player) {
+        if (areCoordinatesInvalid(x, y)) {
+            return false;
+        }
+
         if (board[x][y] == null) {
             board[x][y] = player;
             return true;
         }
 
         return false;
+    }
+
+    private boolean areCoordinatesInvalid(int x, int y) {
+        return x < 0 || y < 0 || x >= board.length || y >= board[0].length;
     }
 
     public String[][] getBoard() {

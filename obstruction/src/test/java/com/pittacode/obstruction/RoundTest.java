@@ -43,4 +43,18 @@ class RoundTest {
 
         assertThat(isSuccessful).isFalse();
     }
+
+    @Test
+    void shouldReportFailureOfMoveWhenAMoveIsInvalidInX() {
+        boolean isSuccessful = underTest.play(-1, 0, "B");
+
+        assertThat(isSuccessful).isFalse();
+    }
+
+    @Test
+    void shouldReportFailureOfMoveWhenAMoveIsInvalidInY() {
+        boolean isSuccessful = underTest.play(0, 100, "B");
+
+        assertThat(isSuccessful).isFalse();
+    }
 }
