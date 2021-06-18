@@ -12,11 +12,11 @@ public class Round {
     private final String roundPlayer;
     private final String[][] board;
 
-    public Round(int xLength, int yLength, String roundPlayer) {
+    public Round(Dimensions dimensions, String roundPlayer) {
         this.isMovePlayed = false;
         this.roundPlayer = roundPlayer;
-        this.board = new String[xLength][yLength];
-        for (int x = 0; x < xLength; x++) {
+        this.board = new String[dimensions.x][dimensions.y];
+        for (int x = 0; x < dimensions.x; x++) {
             Arrays.fill(board[x], "✹");
         }
     }
@@ -27,18 +27,18 @@ public class Round {
         this.board = previousRound.getBoard();
     }
 
-    public boolean play(int x, int y) {
+    public boolean play(Tile tile) {
         if (isMovePlayed) {
             return false;
         }
 
-        if (areCoordinatesInvalid(x, y)) {
+        if (areCoordinatesInvalidFor(tile)) {
             return false;
         }
 
-        if (board[x][y].equals(EMPTY_TILE)) {
-            board[x][y] = roundPlayer;
-            markDeadSpace(x, y);
+        if (board[tile.x][tile.y].equals(EMPTY_TILE)) {
+            board[tile.x][tile.y] = roundPlayer;
+            markDeadSpaceAround(tile);
             isMovePlayed = true;
             return true;
         }
@@ -46,11 +46,21 @@ public class Round {
         return false;
     }
 
-    private boolean areCoordinatesInvalid(int x, int y) {
-        return x < 0 || y < 0 || x >= board.length || y >= board[0].length;
+    private boolean areCoordinatesInvalidFor(Tile tile) {
+        return isTileBeyondTheXBoundaries(tile) || isTileBeyondTheYBoundaries(tile);
     }
 
-    private void markDeadSpace(int x, int y) {
+    private boolean isTileBeyondTheXBoundaries(Tile tile) {
+        return tile.x < 0 || tile.x >= board.length;
+    }
+
+    private boolean isTileBeyondTheYBoundaries(Tile tile) {
+        return tile.y < 0 || tile.y >= board[0].length;
+    }
+
+    private void markDeadSpaceAround(Tile tile) {
+        int x = tile.x;
+        int y = tile.y;
         int xStart = Math.max(x - 1, 0);
         int xEnd = Math.min(x + 1, board.length - 1);
         int yStart = Math.max(y - 1, 0);

@@ -65,8 +65,7 @@ public class GameConsole {
     }
 
     public void printBoard(int roundNumber, String roundBoard) {
-        outputStream.printf("ROUND %d Outcome%n", roundNumber);
-        outputStream.println("   --------     ");
+        outputStream.printf("%nROUND %d Outcome:%n", roundNumber);
         outputStream.println(roundBoard);
         outputStream.println();
     }
@@ -75,5 +74,9 @@ public class GameConsole {
         outputStream.printf("CONGRATULATIONS %s!!!! You are the big winner%n", roundPlayer);
         outputStream.println();
         outputStream.println("Hope you enjoyed this experience brought to you by Alexis and Andreas of PittaCode®");
+    }
+
+    public void print(String message) {
+        outputStream.print(message);
     }
 }

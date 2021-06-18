@@ -2,45 +2,71 @@ package com.pittacode.obstruction;
 
 import java.io.IOException;
 import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.Deque;
-import java.util.List;
+import java.util.Optional;
 
 public class Game {
 
     private final GameConsole gameConsole;
     private final Deque<Round> gameHistory;
+    private final String[] players;
 
     public Game(GameConsole gameConsole) {
         this.gameConsole = gameConsole;
         this.gameHistory = new ArrayDeque<>();
+        this.players = new String[2];
     }
 
     public void start() throws IOException {
         gameConsole.printGameIntro();
 
-        List<String> players = new ArrayList<>(2);
-        players.add(gameConsole.askForPlayerName(1));
-        players.add(gameConsole.askForPlayerName(2));
+        setPlayers();
+
         int currentPlayer = 0;
+        Round currentRound = new Round(gameConsole.askForGameDimensions(),
+                                       players[currentPlayer]);
+        while (!currentRound.isInEndState()) {
+            playRound(currentPlayer, currentRound);
 
-        Dimensions dimensions = gameConsole.askForGameDimensions();
+            store(currentRound);
+            print(currentRound);
 
-        Round currentRound = new Round(dimensions.x, dimensions.y, players.get(currentPlayer));
-        while(!currentRound.isInEndState()) {
-            boolean wasMovePlayed = false;
-            do {
-                Tile tile = gameConsole.askForMove(players.get(currentPlayer));
-                wasMovePlayed = currentRound.play(tile.x, tile.y);
-            }while (!wasMovePlayed);
-
-            gameHistory.push(currentRound);
-            gameConsole.printBoard(gameHistory.size(), currentRound.generateBoardVisualisation());
-
-            currentPlayer = (currentPlayer + 1) % 2;
-            currentRound = new Round(currentRound, players.get(currentPlayer));
+            currentPlayer = changeToNextRoundPlayer(currentPlayer);
+            currentRound = createNextRound(currentPlayer, currentRound);
         }
 
-        gameConsole.printWinner(gameHistory.peek().getRoundPlayer());
+        Optional.ofNullable(gameHistory.peek())
+                .ifPresentOrElse(
+                        lastRound -> gameConsole.printWinner(lastRound.getRoundPlayer()),
+                        () -> gameConsole.print("Something went wrong and no rounds were played")
+                );
+    }
+
+    private void setPlayers() throws IOException {
+        players[0] = gameConsole.askForPlayerName(1);
+        players[1] = gameConsole.askForPlayerName(2);
+    }
+
+    private void playRound(int currentPlayer, Round currentRound) {
+        boolean wasMoveValid = false;
+        do {
+            wasMoveValid = currentRound.play(gameConsole.askForMove(players[currentPlayer]));
+        } while (!wasMoveValid);
+    }
+
+    private void store(Round currentRound) {
+        gameHistory.push(currentRound);
+    }
+
+    private void print(Round currentRound) {
+        gameConsole.printBoard(gameHistory.size(), currentRound.generateBoardVisualisation());
+    }
+
+    private int changeToNextRoundPlayer(int currentPlayer) {
+        return (currentPlayer + 1) % 2;
+    }
+
+    private Round createNextRound(int currentPlayer, Round currentRound) {
+        return new Round(currentRound, players[currentPlayer]);
     }
 }
