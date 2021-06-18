@@ -14,8 +14,8 @@ public class GameConsole {
         this.inputReader = inputReader;
     }
 
-    public Tile roundQuestion() throws IOException {
-        outputStream.print("Make your move, Player> ");
+    public Tile roundQuestion(String player) throws IOException {
+        outputStream.printf("Make your move, %s> ", player);
         String input = inputReader.readLine();
 
         return convertIntoTile(input);

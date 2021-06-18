@@ -13,15 +13,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class GameConsoleTest {
 
     @Test
-    void shouldAskForTileCoordinatesWhenAskingInput() throws IOException {
+    void shouldAskForTileCoordinatesWithPlayerNameWhenAskingInput() throws IOException {
         ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
         PrintStream outputStream = new PrintStream(outputStreamCaptor);
         BufferedReader inputReader = new BufferedReader(new StringReader("0 0"));
         GameConsole underTest = new GameConsole(outputStream, inputReader);
 
-        underTest.roundQuestion();
+        underTest.roundQuestion("A");
 
-        assertThat(outputStreamCaptor.toString()).isEqualTo("Make your move, Player> ");
+        assertThat(outputStreamCaptor.toString()).isEqualTo("Make your move, A> ");
     }
 
     @Test
@@ -36,23 +36,23 @@ public class GameConsoleTest {
         BufferedReader inputReader = new BufferedReader(new StringReader(linesOfInput));
         GameConsole underTest = new GameConsole(outputStream, inputReader);
 
-        Tile tile = underTest.roundQuestion();
+        Tile tile = underTest.roundQuestion("A");
         assertThat(tile.x).isEqualTo(3);
         assertThat(tile.y).isEqualTo(4);
 
-        tile = underTest.roundQuestion();
+        tile = underTest.roundQuestion("A");
         assertThat(tile.x).isEqualTo(3);
         assertThat(tile.y).isEqualTo(4);
 
-        tile = underTest.roundQuestion();
+        tile = underTest.roundQuestion("A");
         assertThat(tile.x).isEqualTo(3);
         assertThat(tile.y).isEqualTo(4);
 
-        tile = underTest.roundQuestion();
+        tile = underTest.roundQuestion("A");
         assertThat(tile.x).isEqualTo(3);
         assertThat(tile.y).isEqualTo(4);
 
-        tile = underTest.roundQuestion();
+        tile = underTest.roundQuestion("A");
         assertThat(tile.x).isEqualTo(3);
         assertThat(tile.y).isEqualTo(4);
     }
