@@ -48,6 +48,18 @@ public class Round {
         }
     }
 
+    public String generateBoardVisualisation() {
+        int yLength = board[0].length;
+        StringBuilder sb = new StringBuilder();
+        for (int y = yLength - 1; y >= 0; y--) {
+            for (String[] strings : board) {
+                sb.append(format("%4s", strings[y]));
+            }
+            sb.append(System.lineSeparator());
+        }
+        return sb.toString();
+    }
+
     public String[][] getBoard() {
         return board.clone();
     }

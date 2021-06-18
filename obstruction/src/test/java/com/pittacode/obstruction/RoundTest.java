@@ -78,4 +78,17 @@ class RoundTest {
                 {"X", "X", "X"}
         });
     }
+
+    @Test
+    void shouldGenerateBoardVisualisation() {
+        underTest.play(0, 1, "B");
+
+        assertThat(underTest.generateBoardVisualisation()).isEqualTo(
+                //@formatter:off
+                "   X   X    \n" +
+                "   B   X    \n" +
+                "   X   X    \n"
+                //@formatter:on
+        );
+    }
 }
