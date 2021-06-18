@@ -28,4 +28,19 @@ class RoundTest {
 
         assertThat(underTest.getBoard()[1][0]).isEqualTo("A");
     }
+
+    @Test
+    void shouldReportSuccessOfMoveWhenAMoveIsPlayed() {
+        boolean isSuccessful = underTest.play(0, 0, "A");
+
+        assertThat(isSuccessful).isTrue();
+    }
+
+    @Test
+    void shouldReportFailureOfMoveWhenAMoveIsNotPlayed() {
+        underTest.play(1, 0, "A");
+        boolean isSuccessful = underTest.play(1, 0, "B");
+
+        assertThat(isSuccessful).isFalse();
+    }
 }
