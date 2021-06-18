@@ -28,11 +28,31 @@ public class GameConsoleTest {
     void shouldReturnTileCoordinatesWhenAskingInput() throws IOException {
         ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
         PrintStream outputStream = new PrintStream(outputStreamCaptor);
-        BufferedReader inputReader = new BufferedReader(new StringReader("3 4\n"));
+        String linesOfInput = "3 4\n"
+                +"    3 4\n"
+                +"3 4   \n"
+                +"3    4\n"
+                +"  3   4   \n";
+        BufferedReader inputReader = new BufferedReader(new StringReader(linesOfInput));
         GameConsole underTest = new GameConsole(outputStream, inputReader);
 
         Tile tile = underTest.roundQuestion();
+        assertThat(tile.x).isEqualTo(3);
+        assertThat(tile.y).isEqualTo(4);
 
+        tile = underTest.roundQuestion();
+        assertThat(tile.x).isEqualTo(3);
+        assertThat(tile.y).isEqualTo(4);
+
+        tile = underTest.roundQuestion();
+        assertThat(tile.x).isEqualTo(3);
+        assertThat(tile.y).isEqualTo(4);
+
+        tile = underTest.roundQuestion();
+        assertThat(tile.x).isEqualTo(3);
+        assertThat(tile.y).isEqualTo(4);
+
+        tile = underTest.roundQuestion();
         assertThat(tile.x).isEqualTo(3);
         assertThat(tile.y).isEqualTo(4);
     }

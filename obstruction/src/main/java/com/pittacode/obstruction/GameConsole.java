@@ -22,7 +22,7 @@ public class GameConsole {
     }
 
     private Tile convertIntoTile(String input) {
-        String[] coordinates = input.split(" +");
+        String[] coordinates = input.trim().split(" +");
         return new Tile(Integer.parseInt(coordinates[0]),
                         Integer.parseInt(coordinates[1]));
     }
