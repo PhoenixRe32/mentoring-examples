@@ -152,4 +152,12 @@ class RoundTest {
         assertThat(firstMoveResult).isTrue();
         assertThat(secondMoveResult).isFalse();
     }
+
+    @Test
+    void shouldReportIfBoardIsInEndState() {
+        Round underTest = new Round(3, 3, "A");
+        underTest.play(1, 1);
+
+        assertThat(underTest.isInEndState()).isTrue();
+    }
 }

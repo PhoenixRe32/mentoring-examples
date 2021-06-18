@@ -89,4 +89,15 @@ public class Round {
     public String getRoundPlayer() {
         return roundPlayer;
     }
+
+    public boolean isInEndState() {
+        for (String[] boardColumn : board) {
+            for (String tile : boardColumn) {
+                if (tile.isEmpty()) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 }
