@@ -6,10 +6,12 @@ import static java.lang.String.format;
 
 public class Round {
 
+    private boolean isMovePlayed;
     private final String roundPlayer;
     private final String[][] board;
 
     public Round(int xLength, int yLength, String roundPlayer) {
+        this.isMovePlayed = false;
         this.roundPlayer = roundPlayer;
         this.board = new String[xLength][yLength];
         for (int x = 0; x < xLength; x++) {
@@ -18,11 +20,16 @@ public class Round {
     }
 
     public Round(Round previousRound, String roundPlayer) {
+        this.isMovePlayed = false;
         this.roundPlayer = roundPlayer;
         this.board = previousRound.getBoard();
     }
 
     public boolean play(int x, int y) {
+        if (isMovePlayed) {
+            return false;
+        }
+
         if (areCoordinatesInvalid(x, y)) {
             return false;
         }
@@ -30,6 +37,7 @@ public class Round {
         if (board[x][y].isEmpty()) {
             board[x][y] = roundPlayer;
             markDeadSpace(x, y);
+            isMovePlayed = true;
             return true;
         }
 

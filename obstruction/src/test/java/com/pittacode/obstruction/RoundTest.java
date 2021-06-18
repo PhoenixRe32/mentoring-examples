@@ -141,4 +141,15 @@ class RoundTest {
 
         assertThat(isMoveValid).isFalse();
     }
+
+    @Test
+    void shouldOnlyBeAbleToPlayOnce() {
+        Round currentRound = new Round(6, 6, "A");
+        boolean firstMoveResult = currentRound.play(0, 0);
+        // Make sure the second move is not invalid
+        boolean secondMoveResult = currentRound.play(5, 5);
+
+        assertThat(firstMoveResult).isTrue();
+        assertThat(secondMoveResult).isFalse();
+    }
 }
