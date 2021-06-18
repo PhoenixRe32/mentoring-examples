@@ -67,8 +67,8 @@ class RoundTest {
         Round underTest = new Round(2, 2, "A");
 
         assertThat(underTest.getBoard()).isDeepEqualTo(new String[][]{
-                {"", ""},
-                {"", ""}
+                {"✹", "✹"},
+                {"✹", "✹"}
         });
     }
 
@@ -79,9 +79,9 @@ class RoundTest {
         underTest.play(1, 1);
 
         assertThat(underTest.getBoard()).isDeepEqualTo(new String[][]{
-                {"X", "X", "X"},
-                {"X", "B", "X"},
-                {"X", "X", "X"}
+                {"☥", "☥", "☥"},
+                {"☥", "B", "☥"},
+                {"☥", "☥", "☥"}
         });
     }
 
@@ -93,9 +93,9 @@ class RoundTest {
 
         assertThat(underTest.generateBoardVisualisation()).isEqualTo(
                 //@formatter:off
-                "   X   X    \n" +
-                "   A   X    \n" +
-                "   X   X    \n"
+                "   ☥   ☥   ✹\n" +
+                "   A   ☥   ✹\n" +
+                "   ☥   ☥   ✹\n"
                 //@formatter:on
         );
     }
@@ -128,7 +128,7 @@ class RoundTest {
         currentRound.play(2, 2);
 
         assertThat(currentRound.getBoard()[2][2]).isEqualTo("B");
-        assertThat(previousRound.getBoard()[2][2]).isEqualTo("");
+        assertThat(previousRound.getBoard()[2][2]).isEqualTo("✹");
     }
 
     @Test

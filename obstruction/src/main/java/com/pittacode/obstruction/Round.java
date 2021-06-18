@@ -6,6 +6,8 @@ import static java.lang.String.format;
 
 public class Round {
 
+    private static final String EMPTY_TILE = "✹";
+
     private boolean isMovePlayed;
     private final String roundPlayer;
     private final String[][] board;
@@ -15,7 +17,7 @@ public class Round {
         this.roundPlayer = roundPlayer;
         this.board = new String[xLength][yLength];
         for (int x = 0; x < xLength; x++) {
-            Arrays.fill(board[x], "");
+            Arrays.fill(board[x], "✹");
         }
     }
 
@@ -34,7 +36,7 @@ public class Round {
             return false;
         }
 
-        if (board[x][y].isEmpty()) {
+        if (board[x][y].equals(EMPTY_TILE)) {
             board[x][y] = roundPlayer;
             markDeadSpace(x, y);
             isMovePlayed = true;
@@ -57,7 +59,7 @@ public class Round {
         for (int xPos = xStart; xPos <= xEnd; xPos++) {
             for (int yPos = yStart; yPos <= yEnd; yPos++) {
                 if (!(xPos == x && yPos == y)) {
-                    board[xPos][yPos] = "X";
+                    board[xPos][yPos] = "☥";
                 }
             }
         }
@@ -93,7 +95,7 @@ public class Round {
     public boolean isInEndState() {
         for (String[] boardColumn : board) {
             for (String tile : boardColumn) {
-                if (tile.isEmpty()) {
+                if (tile.equals(EMPTY_TILE)) {
                     return false;
                 }
             }

@@ -29,7 +29,7 @@ public class GameConsole {
         outputStream.printf("Enter player's %d name> ", playerNumber);
         String playerName = inputReader.readLine();
 
-        return playerName.substring(0, Math.min(3, playerName.length()));
+        return playerName.substring(0, Math.min(3, playerName.length())).toUpperCase();
     }
 
     public Dimensions askForGameDimensions() {
