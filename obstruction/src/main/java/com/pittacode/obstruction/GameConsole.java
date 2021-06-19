@@ -4,10 +4,13 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.Arrays;
+import java.util.regex.Pattern;
 
 import static java.lang.String.format;
 
 public class GameConsole {
+
+    private static final Pattern SPACES = Pattern.compile(" +");
 
     private final PrintStream outputStream;
     private final BufferedReader inputReader;
@@ -46,7 +49,7 @@ public class GameConsole {
         return () -> {
             outputStream.print(prompt);
             String input = inputReader.readLine();
-            return input.trim().split(" +");
+            return SPACES.split(input.trim());
         };
     }
 
