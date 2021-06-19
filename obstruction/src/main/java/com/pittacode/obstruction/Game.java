@@ -47,10 +47,10 @@ public class Game {
     }
 
     private void playRound(int currentPlayer, Round currentRound) {
-        boolean wasMoveValid = currentRound.play(gameConsole.askForMove(players[currentPlayer]));
-        while (!wasMoveValid) {
-            gameConsole.printInvalidMoveError();
-            wasMoveValid = currentRound.play(gameConsole.askForMove(players[currentPlayer]));
+        MoveOutcome moveOutcome = currentRound.play(gameConsole.askForMove(players[currentPlayer]));
+        while (!moveOutcome.isValid) {
+            gameConsole.printInvalidMoveError(moveOutcome.error);
+            moveOutcome = currentRound.play(gameConsole.askForMove(players[currentPlayer]));
         }
     }
 

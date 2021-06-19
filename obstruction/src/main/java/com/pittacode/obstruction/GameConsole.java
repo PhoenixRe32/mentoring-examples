@@ -83,7 +83,7 @@ public class GameConsole {
         outputStream.println("Something went wrong and no rounds were played");
     }
 
-    public void printInvalidMoveError() {
-        outputStream.println("Move was invalid");
+    public void printInvalidMoveError(MoveOutcome.MoveError error) {
+        outputStream.println("Move was invalid. " + error.message);
     }
 }

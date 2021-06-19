@@ -29,37 +29,29 @@ class RoundTest {
     void shouldReportSuccessOfMoveWhenAMoveIsPlayed() {
         Round underTest = new Round(new Dimensions(3, 3), "A");
 
-        boolean isMoveValid = underTest.play(new Tile(0, 0));
+        MoveOutcome moveOutcome = underTest.play(new Tile(0, 0));
 
-        assertThat(isMoveValid).isTrue();
-    }
-
-    @Test
-    void shouldReportFailureOfMoveWhenAMoveIsNotPlayed() {
-        Round underTest = new Round(new Dimensions(3, 3), "A");
-
-        underTest.play(new Tile(1, 0));
-        boolean isMoveValid = underTest.play(new Tile(1, 0));
-
-        assertThat(isMoveValid).isFalse();
+        assertThat(moveOutcome.isValid).isTrue();
     }
 
     @Test
     void shouldReportFailureOfMoveWhenAMoveIsInvalidInX() {
         Round underTest = new Round(new Dimensions(3, 3), "A");
 
-        boolean isMoveValid = underTest.play(new Tile(-1, 0));
+        MoveOutcome moveOutcome = underTest.play(new Tile(-1, 0));
 
-        assertThat(isMoveValid).isFalse();
+        assertThat(moveOutcome.isValid).isFalse();
+        assertThat(moveOutcome.error).isEqualTo(MoveOutcome.MoveError.OUT_OF_BOUNDS);
     }
 
     @Test
     void shouldReportFailureOfMoveWhenAMoveIsInvalidInY() {
         Round underTest = new Round(new Dimensions(3, 3), "A");
 
-        boolean isMoveValid = underTest.play(new Tile(0, 100));
+        MoveOutcome moveOutcome = underTest.play(new Tile(0, 100));
 
-        assertThat(isMoveValid).isFalse();
+        assertThat(moveOutcome.isValid).isFalse();
+        assertThat(moveOutcome.error).isEqualTo(MoveOutcome.MoveError.OUT_OF_BOUNDS);
     }
 
     @Test
@@ -137,20 +129,34 @@ class RoundTest {
         previousRound.play(new Tile(0, 0));
 
         Round currentRound = new Round(previousRound, "C");
-        boolean isMoveValid = currentRound.play(new Tile(0, 1));
+        MoveOutcome moveOutcome = currentRound.play(new Tile(0, 1));
 
-        assertThat(isMoveValid).isFalse();
+        assertThat(moveOutcome.isValid).isFalse();
+        assertThat(moveOutcome.error).isEqualTo(MoveOutcome.MoveError.OCCUPIED);
+    }
+
+    @Test
+    void shouldNoBeAbleToPlayOnOccupiedTiles() {
+        Round previousRound = new Round(new Dimensions(3, 3), "A");
+        previousRound.play(new Tile(0, 0));
+
+        Round currentRound = new Round(previousRound, "C");
+        MoveOutcome moveOutcome = currentRound.play(new Tile(0, 0));
+
+        assertThat(moveOutcome.isValid).isFalse();
+        assertThat(moveOutcome.error).isEqualTo(MoveOutcome.MoveError.OCCUPIED);
     }
 
     @Test
     void shouldOnlyBeAbleToPlayOnce() {
         Round currentRound = new Round(new Dimensions(6, 6), "A");
-        boolean firstMoveResult = currentRound.play(new Tile(0, 0));
+        MoveOutcome firstMoveOutcome = currentRound.play(new Tile(0, 0));
         // Make sure the second move is not invalid
-        boolean secondMoveResult = currentRound.play(new Tile(5, 5));
+        MoveOutcome secondMoveOutcome = currentRound.play(new Tile(5, 5));
 
-        assertThat(firstMoveResult).isTrue();
-        assertThat(secondMoveResult).isFalse();
+        assertThat(firstMoveOutcome.isValid).isTrue();
+        assertThat(secondMoveOutcome.isValid).isFalse();
+        assertThat(secondMoveOutcome.error).isEqualTo(MoveOutcome.MoveError.DOUBLE_PLAY);
     }
 
     @Test

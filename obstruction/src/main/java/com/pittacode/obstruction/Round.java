@@ -27,23 +27,23 @@ public class Round {
         this.board = previousRound.getBoard();
     }
 
-    public boolean play(Tile tile) {
+    public MoveOutcome play(Tile tile) {
         if (isMovePlayed) {
-            return false;
+            return MoveOutcome.aFailedMove(MoveOutcome.MoveError.DOUBLE_PLAY);
         }
 
         if (areCoordinatesInvalidFor(tile)) {
-            return false;
+            return MoveOutcome.aFailedMove(MoveOutcome.MoveError.OUT_OF_BOUNDS);
         }
 
         if (board[tile.x][tile.y].equals(EMPTY_TILE)) {
             board[tile.x][tile.y] = roundPlayer;
             markDeadSpaceAround(tile);
             isMovePlayed = true;
-            return true;
+            return MoveOutcome.aSuccessfulMove();
         }
 
-        return false;
+        return MoveOutcome.aFailedMove(MoveOutcome.MoveError.OCCUPIED);
     }
 
     private boolean areCoordinatesInvalidFor(Tile tile) {
