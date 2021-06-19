@@ -76,7 +76,11 @@ public class GameConsole {
         outputStream.println("Hope you enjoyed this experience brought to you by Alexis and Andreas of PittaCode®");
     }
 
-    public void print(String message) {
-        outputStream.print(message);
+    public void printNoRoundsError() {
+        outputStream.println("Something went wrong and no rounds were played");
+    }
+
+    public void printInvalidMoveError() {
+        outputStream.println("Move was invalid");
     }
 }

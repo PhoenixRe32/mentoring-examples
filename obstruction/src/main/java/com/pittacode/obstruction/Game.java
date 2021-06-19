@@ -10,11 +10,13 @@ public class Game {
     private final GameConsole gameConsole;
     private final Deque<Round> gameHistory;
     private final String[] players;
+    private int currentPlayer;
 
     public Game(GameConsole gameConsole) {
         this.gameConsole = gameConsole;
         this.gameHistory = new ArrayDeque<>();
         this.players = new String[2];
+        this.currentPlayer = 0;
     }
 
     public void start() throws IOException {
@@ -22,7 +24,6 @@ public class Game {
 
         setPlayers();
 
-        int currentPlayer = 0;
         Round currentRound = new Round(gameConsole.askForGameDimensions(),
                                        players[currentPlayer]);
         while (!currentRound.isInEndState()) {
@@ -31,15 +32,13 @@ public class Game {
             store(currentRound);
             print(currentRound);
 
-            currentPlayer = changeToNextRoundPlayer(currentPlayer);
-            currentRound = createNextRound(currentPlayer, currentRound);
+            currentRound = prepareNextRound(currentRound);
         }
 
         Optional.ofNullable(gameHistory.peek())
-                .ifPresentOrElse(
-                        lastRound -> gameConsole.printWinner(lastRound.getRoundPlayer()),
-                        () -> gameConsole.print("Something went wrong and no rounds were played")
-                );
+                .map(Round::getRoundPlayer)
+                .ifPresentOrElse(gameConsole::printWinner,
+                                 gameConsole::printNoRoundsError);
     }
 
     private void setPlayers() throws IOException {
@@ -48,10 +47,11 @@ public class Game {
     }
 
     private void playRound(int currentPlayer, Round currentRound) {
-        boolean wasMoveValid = false;
-        do {
+        boolean wasMoveValid = currentRound.play(gameConsole.askForMove(players[currentPlayer]));
+        while (!wasMoveValid) {
+            gameConsole.printInvalidMoveError();
             wasMoveValid = currentRound.play(gameConsole.askForMove(players[currentPlayer]));
-        } while (!wasMoveValid);
+        }
     }
 
     private void store(Round currentRound) {
@@ -62,11 +62,8 @@ public class Game {
         gameConsole.printBoard(gameHistory.size(), currentRound.generateBoardVisualisation());
     }
 
-    private int changeToNextRoundPlayer(int currentPlayer) {
-        return (currentPlayer + 1) % 2;
-    }
-
-    private Round createNextRound(int currentPlayer, Round currentRound) {
+    private Round prepareNextRound(Round currentRound) {
+        currentPlayer = (currentPlayer + 1) % 2;
         return new Round(currentRound, players[currentPlayer]);
     }
 }
